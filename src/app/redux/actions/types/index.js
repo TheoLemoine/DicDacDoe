@@ -5,5 +5,4 @@ export const GRID = {
 
 export default {
     GRID,
-    GAME,
 }

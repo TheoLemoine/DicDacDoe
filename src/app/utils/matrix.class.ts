@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import { Vector3 } from 'three'
 
 interface ArrayGrid3D<T> extends Array<Array<Array<T>>> {}
 
@@ -30,7 +29,7 @@ export default class ImmutableMatrix3D<T> {
         lenght: number,
         emptyValue: T
     ): any {
-        if ((deepness = 0)) return emptyValue
+        if (deepness === 0) return emptyValue
 
         return new Array(lenght).fill(
             this.buildArrayModel(deepness - 1, lenght, emptyValue)
