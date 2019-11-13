@@ -24,6 +24,8 @@
     },
     "dependencies": {
         "@babel/preset-react": "^7.7.0",
+        "@babel/preset-typescript": "^7.7.2",
+        "@types/lodash": "^4.14.146",
         "lodash": "^4.17.15",
         "prop-types": "^15.7.2",
         "react": "^16.11.0",
@@ -32,6 +34,7 @@
         "react-spring": "^8.0.27",
         "react-three-fiber": "^3.0.13",
         "redux": "^4.0.4",
+        "redux-thunk": "^2.3.0",
         "surge": "^0.21.3",
         "three": "^0.110.0"
     }
