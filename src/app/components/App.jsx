@@ -1,17 +1,8 @@
 import React from 'react'
-import { Canvas } from 'react-three-fiber'
-// import { connect } from 'react-redux'
-
-import Scene from './three/Scene.jsx'
-import Controls from './three/Controls.jsx'
+import CanvasApp from './CanvasApp'
 
 function App() {
-    return (
-        <Canvas style={{ height: '100vh' }}>
-            <Scene />
-            <Controls />
-        </Canvas>
-    )
+    return <CanvasApp />
 }
 
 // connect(
