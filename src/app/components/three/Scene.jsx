@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useThree } from 'react-three-fiber'
-import { Color } from 'three'
+import { Color, AxesHelper } from 'three'
 import Box from './Box.jsx'
 
 function Scene() {
@@ -11,6 +11,7 @@ function Scene() {
 
     return (
         <>
+            <axesHelper args={[5]} />
             <mesh position={hoverPosition}>
                 <boxBufferGeometry attach="geometry" args={[0.1, 0.1, 0.1]} />
                 <meshNormalMaterial attach="material" />
