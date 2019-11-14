@@ -1,6 +1,6 @@
 import { GRID, PLAYERS, CURRENT_PLAYER, WINNER } from '../types'
-import Coords from '../../../utils/coords.type'
-import IPlayer from '../../../utils/IPlayer.interface'
+import Coords from '../../utils/coords.type'
+import IPlayer from '../../utils/IPlayer.interface'
 
 export const grid = {
     add(coords: Coords, value: IPlayer) {
