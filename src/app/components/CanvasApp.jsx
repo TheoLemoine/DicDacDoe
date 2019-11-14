@@ -4,39 +4,37 @@ import { Canvas } from 'react-three-fiber'
 import Cube from './three/Cube.jsx'
 import Controls from './three/Controls.jsx'
 
-function f(cb) {
-    return () => {
-        return cb
-    }
-}
 
 function CanvasApp() {
     const [hoverPosition, setHoverPosition] = useState([0, 0, 0])
-    const [focusCondition, setFocusCondition] = useState(
-        f(function(arg) {
-            return true
-        })
-    )
-    const [selectCondition, setSelectCondition] = useState([null, null, null])
+    const [focusArea, setFocusArea] = useState([null, null, null])
+    const [selectedPlane, setSelectedPlane] = useState(null)
     const [isVertical, setIsVertical] = useState(false)
+
+    console.log(selectedPlane)
 
     const onHoverMove = (point, direction, cubePosition) => {
         if ((direction == 'x' || direction == 'z') && !isVertical) {
-            setFocusCondition(f(([x, y, z]) => y == cubePosition[1]))
+            setFocusArea([null, cubePosition[1], null])
         }
         if (direction == 'x' && isVertical) {
-            setFocusCondition(f(([x, y, z]) => z == cubePosition[2]))
+            setFocusArea([null, null, cubePosition[2]])
         }
         if (direction == 'z' && isVertical) {
-            setFocusCondition(f(([x, y, z]) => x == cubePosition[0]))
+            setFocusArea([cubePosition[0], null, null])
         }
         if (direction == 'y' && isVertical) {
-            setFocusCondition(f(([x, y, z]) => y == cubePosition[1]))
+            setFocusArea([null, cubePosition[1], null])
         }
         setHoverPosition(point)
     }
 
-    const onClick = console.log
+    const onClick = () => {
+        if (selectedPlane == null) {
+            const axes = ['x', 'y', 'z']
+            setSelectedPlane(focusArea.reduce((acc, cur, i) => acc != null || cur == null ? acc : {axis: axes[i], value: cur}))   
+        }
+    }
 
     return (
         <Canvas
@@ -49,8 +47,8 @@ function CanvasApp() {
         >
             <Cube
                 hoverPosition={hoverPosition}
-                focusCondition={focusCondition}
-                selectCondition={selectCondition}
+                focusArea={focusArea}
+                selectedPlane={selectedPlane}
                 onHoverMove={onHoverMove}
                 onClick={onClick}
             />
