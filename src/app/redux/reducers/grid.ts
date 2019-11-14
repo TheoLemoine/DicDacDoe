@@ -4,7 +4,7 @@ import ImmutableMatrix3D from '../../utils/matrix.class'
 
 const emptyMatrix = new ImmutableMatrix3D<number>(3, 0)
 
-export default (matrix = emptyMatrix, action) => {
+export default (matrix = emptyMatrix, action: any) => {
     switch (action.type) {
         case GRID.ADD:
             const { coords, value } = action
