@@ -1,18 +1,18 @@
 import { GRID } from '../actions/types/index'
-import ImmutableMatrix3D from '../utils/matrix.class'
+import { Array3D, set, makeEmpty } from '../utils/array3D'
 
-export const defaultState = new ImmutableMatrix3D<number>(3, 0)
+export const defaultState = makeEmpty(3, 3, null)
 
-export default (matrix: ImmutableMatrix3D<number>, action: any) => {
+export default (grid: Array3D, action: any) => {
     switch (action.type) {
         case GRID.ADD:
             const { coords, value } = action
-            return matrix.set(coords, value)
+            return set(grid, coords, value)
 
         case GRID.RESET:
             return defaultState
 
         default:
-            return matrix
+            return grid
     }
 }

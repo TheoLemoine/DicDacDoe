@@ -1,6 +1,5 @@
-import ImmutableMatrix3D from './matrix.class'
-import Coords from './coords.type'
+import { Array3D, Coords } from './array3D'
 
 export default interface IPlayer {
-    getPlayedCoords(gameState: ImmutableMatrix3D<any>): Promise<Coords>
+    play(gameState: Array3D): Promise<Coords>
 }

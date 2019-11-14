@@ -1,5 +1,5 @@
 import { GRID, PLAYERS, CURRENT_PLAYER, WINNER } from '../types'
-import Coords from '../../utils/coords.type'
+import { Coords } from '../../utils/array3D'
 import IPlayer from '../../utils/IPlayer.interface'
 
 export const grid = {
