@@ -1,11 +1,5 @@
 import { WINNER, PLAYERS, CURRENT_PLAYER } from '../actions/types/index'
 
-export const defaultState = {
-    winner: null,
-    current_player: null,
-    players: [],
-}
-
 export default (state: any, action: any) => {
     switch (action.type) {
         case WINNER.SET:

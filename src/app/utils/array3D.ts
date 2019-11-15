@@ -25,12 +25,12 @@ export function clone(array: Array3D): Array3D {
     return map(array, (_, e) => e)
 }
 
-export function get(array: Array3D, at: Coords): void {
+export function get(array: Array3D, at: Coords): any {
     const { x, y, z } = at
     return array[x][y][z]
 }
 
-export function set(array: Array3D, at: Coords, value: any): any {
+export function set(array: Array3D, at: Coords, value: any): Array3D {
     const { x, y, z } = at
     const newArray = clone(array)
     newArray[x][y][z] = value

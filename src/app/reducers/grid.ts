@@ -1,8 +1,6 @@
 import { GRID } from '../actions/types/index'
 import { Array3D, set, makeEmpty } from '../utils/array3D'
 
-export const defaultState = makeEmpty(3, 3, null)
-
 export default (grid: Array3D, action: any) => {
     switch (action.type) {
         case GRID.ADD:
@@ -10,7 +8,7 @@ export default (grid: Array3D, action: any) => {
             return set(grid, coords, value)
 
         case GRID.RESET:
-            return defaultState
+            return makeEmpty(3, 3, null)
 
         default:
             return grid
