@@ -63,3 +63,13 @@ export function filter(
 export function flatten(array3D: Array3D) {
     return _.flattenDeep(array3D)
 }
+
+export function coordsIn3DArray(coords: Coords) {
+    for (const axis in coords) {
+        const coord = coords[axis]
+
+        if (coord >= 0 && coord <= 2) return false
+    }
+
+    return true
+}
