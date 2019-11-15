@@ -16,7 +16,15 @@ const AXES = [
     },
 ]
 
-function Cell({ position, onHoverMove, focus, onClick }) {
+function Cell({
+    position,
+    player,
+    onHoverMove,
+    focus,
+    onClick,
+    visible,
+    stopPropagation,
+}) {
     const getAxisAngle = (axis, target) => {
         const angle = axis.vector.angleTo(target) % Math.PI
         if (angle > Math.PI / 2) return Math.abs(angle - Math.PI)
@@ -35,21 +43,50 @@ function Cell({ position, onHoverMove, focus, onClick }) {
     }
 
     const move = e => {
+        if (stopPropagation) e.stopPropagation()
         const { x, y, z } = e.point
-        e.stopPropagation()
         const point = new Vector3(x, y, z)
         const direction = getDirection(point.clone())
         onHoverMove([x, y, z], direction, position)
     }
 
+    const click = e => {
+        if (stopPropagation) {
+            e.stopPropagation()
+            onClick(player, position)
+        }
+    }
+
+    const getOpacity = () => {
+        if (!visible) {
+            return 0.2
+        }
+        if (focus) {
+            return 1
+        }
+        return 0.7
+    }
+
+    const getColor = () => {
+        switch (player) {
+            case 1:
+                return 'red'
+            case 2:
+                return 'blue'
+            default:
+                return 'white'
+        }
+    }
+
     return (
-        <mesh position={position} onPointerMove={move} onClick={onClick}>
+        <mesh position={position} onPointerMove={move} onClick={click}>
             <boxBufferGeometry attach="geometry" args={[0.9, 0.9, 0.9]} />
-            {focus ? (
-                <meshNormalMaterial attach="material" />
-            ) : (
-                <meshBasicMaterial attach="material" color={'white'} />
-            )}
+            <meshPhongMaterial
+                attach="material"
+                color={getColor()}
+                transparent={true}
+                opacity={getOpacity()}
+            />
         </mesh>
     )
 }

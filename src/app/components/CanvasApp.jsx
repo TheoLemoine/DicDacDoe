@@ -1,19 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useReducer } from 'react'
 import { Canvas } from 'react-three-fiber'
+import GridReducer, { defaultState } from '../reducers/grid.ts'
+import { grid as gridActions } from '../actions/creators/index.ts'
 
 import Cube from './three/Cube.jsx'
-import Controls from './three/Controls.jsx'
-
+import CameraControls from './three/CameraControls.jsx'
+import { Vector3 } from 'three'
 
 function CanvasApp() {
     const [hoverPosition, setHoverPosition] = useState([0, 0, 0])
     const [focusArea, setFocusArea] = useState([null, null, null])
     const [selectedPlane, setSelectedPlane] = useState(null)
     const [isVertical, setIsVertical] = useState(false)
+    const [gridState, gridDispatch] = useReducer(GridReducer, defaultState)
 
-    console.log(selectedPlane)
-
-    const onHoverMove = (point, direction, cubePosition) => {
+    const updateFocusAreaFromPlane = (direction, cubePosition) => {
         if ((direction == 'x' || direction == 'z') && !isVertical) {
             setFocusArea([null, cubePosition[1], null])
         }
@@ -26,13 +27,31 @@ function CanvasApp() {
         if (direction == 'y' && isVertical) {
             setFocusArea([null, cubePosition[1], null])
         }
+    }
+
+    const onHoverMove = (point, direction, cubePosition) => {
+        if (selectedPlane == null) {
+            updateFocusAreaFromPlane(direction, cubePosition)
+        } else {
+            setFocusArea([...cubePosition])
+        }
         setHoverPosition(point)
     }
 
-    const onClick = () => {
+    const onClick = player => {
         if (selectedPlane == null) {
             const axes = ['x', 'y', 'z']
-            setSelectedPlane(focusArea.reduce((acc, cur, i) => acc != null || cur == null ? acc : {axis: axes[i], value: cur}))   
+            setSelectedPlane(
+                focusArea.reduce((acc, cur, i) =>
+                    acc != null || cur == null
+                        ? acc
+                        : { axis: axes[i], value: cur }
+                )
+            )
+            setFocusArea([null, null, null])
+        } else if (player == null) {
+            const [x, y, z] = focusArea.map(c => c + 1)
+            gridDispatch(gridActions.add(new Vector3(x, y, z), 1))
         }
     }
 
@@ -44,6 +63,10 @@ function CanvasApp() {
                     setIsVertical(!isVertical)
                 }
             }}
+            onPointerMissed={() => {
+                setSelectedPlane(null)
+                setFocusArea([null, null, null])
+            }}
         >
             <Cube
                 hoverPosition={hoverPosition}
@@ -52,7 +75,13 @@ function CanvasApp() {
                 onHoverMove={onHoverMove}
                 onClick={onClick}
             />
-            <Controls />
+            <ambientLight intensity={0.3} color={0xffffff} />
+            <directionalLight
+                intensity={1}
+                color={0xffffff}
+                position={new Vector3(10, 10, 8)}
+            />
+            <CameraControls />
         </Canvas>
     )
 }
