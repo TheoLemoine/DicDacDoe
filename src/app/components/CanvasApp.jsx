@@ -14,24 +14,24 @@ function CanvasApp() {
     const [isVertical, setIsVertical] = useState(false)
     const [gridState, gridDispatch] = useReducer(GridReducer, defaultState)
 
-    const updateFocusAreaFromPlane = (direction, cubePosition) => {
+    const processFocusArea = (direction, cubePosition) => {
         if ((direction == 'x' || direction == 'z') && !isVertical) {
-            setFocusArea([null, cubePosition[1], null])
+            return [null, cubePosition[1], null]
         }
         if (direction == 'x' && isVertical) {
-            setFocusArea([null, null, cubePosition[2]])
+            return [null, null, cubePosition[2]]
         }
         if (direction == 'z' && isVertical) {
-            setFocusArea([cubePosition[0], null, null])
+            return [cubePosition[0], null, null]
         }
-        if (direction == 'y' && isVertical) {
-            setFocusArea([null, cubePosition[1], null])
+        if (direction == 'y') {
+            return [null, cubePosition[1], null]
         }
     }
 
     const onHoverMove = (point, direction, cubePosition) => {
         if (selectedPlane == null) {
-            updateFocusAreaFromPlane(direction, cubePosition)
+            setFocusArea(processFocusArea(direction, cubePosition))
         } else {
             setFocusArea([...cubePosition])
         }
@@ -52,6 +52,8 @@ function CanvasApp() {
         } else if (player == null) {
             const [x, y, z] = focusArea.map(c => c + 1)
             gridDispatch(gridActions.add(new Vector3(x, y, z), 1))
+            setSelectedPlane(null)
+            setFocusArea([null, null, null])
         }
     }
 
