@@ -1,6 +1,6 @@
 import React, { useReducer, createContext } from 'react'
 import grid from '../../reducers/grid.ts'
-import { makeEmpty } from '../utils/array3D'
+import { makeEmpty } from '../../utils/array3D'
 
 const GridContext = createContext(null)
 

@@ -1,8 +1,8 @@
-import React, { useState, useReducer } from 'react'
+import React, { useState, useContext } from 'react'
 import { Canvas } from 'react-three-fiber'
-import GridReducer, { defaultState } from '../reducers/grid.ts'
 import { grid as gridActions } from '../actions/creators/index.ts'
 
+import GridContext from './providers/gridProvider'
 import Cube from './three/Cube.jsx'
 import CameraControls from './three/CameraControls.jsx'
 import { Vector3 } from 'three'
@@ -12,7 +12,7 @@ function CanvasApp() {
     const [focusArea, setFocusArea] = useState([null, null, null])
     const [selectedPlane, setSelectedPlane] = useState(null)
     const [isVertical, setIsVertical] = useState(false)
-    const [gridState, gridDispatch] = useReducer(GridReducer, defaultState)
+    const [grid, dispatch] = useContext(GridContext)
 
     const updateFocusAreaFromPlane = (direction, cubePosition) => {
         if ((direction == 'x' || direction == 'z') && !isVertical) {
@@ -51,7 +51,7 @@ function CanvasApp() {
             setFocusArea([null, null, null])
         } else if (player == null) {
             const [x, y, z] = focusArea.map(c => c + 1)
-            gridDispatch(gridActions.add(new Vector3(x, y, z), 1))
+            dispatch(gridActions.add(new Vector3(x, y, z), 1))
         }
     }
 
@@ -74,7 +74,7 @@ function CanvasApp() {
                 selectedPlane={selectedPlane}
                 onHoverMove={onHoverMove}
                 onClick={onClick}
-                grid={gridState}
+                grid={grid}
             />
             <ambientLight intensity={0.3} color={0xffffff} />
             <directionalLight
