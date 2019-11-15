@@ -74,6 +74,7 @@ function CanvasApp() {
                 selectedPlane={selectedPlane}
                 onHoverMove={onHoverMove}
                 onClick={onClick}
+                grid={gridState}
             />
             <ambientLight intensity={0.3} color={0xffffff} />
             <directionalLight
