@@ -1,23 +1,17 @@
 import React from 'react'
 import CanvasApp from './CanvasApp'
 
-function App() {
-    return <CanvasApp />
-}
+import { GameProvider } from './providers/gameProvider'
+import { GridProvider } from './providers/gridProvider'
 
-// connect(
-//     (state, props) => {
-//         return {
-//             grid: state.grid,
-//         }
-//     },
-//     (dispatch, props) => {
-//         return {
-//             onPlayerClick(id) {
-//                 dispatch(grid.resolvePlayerID(id))
-//             },
-//         }
-//     }
-// )(App)
+function App() {
+    return (
+        <GameProvider>
+            <GridProvider>
+                <CanvasApp />
+            </GridProvider>
+        </GameProvider>
+    )
+}
 
 export default App

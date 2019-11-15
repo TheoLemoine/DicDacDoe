@@ -1,7 +1,7 @@
-import React, { useReducer } from 'react'
+import React, { useContext } from 'react'
 import Cell from './Cell.jsx'
-import GridReducer, { defaultState } from '../../reducers/grid.ts'
 import { map } from '../../utils/array3D.ts'
+import GridContext from '../providers/gridProvider'
 
 function Cube({
     hoverPosition,
