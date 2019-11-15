@@ -22,7 +22,7 @@ export function makeEmpty(
 }
 
 export function clone(array: Array3D): Array3D {
-    return _.cloneDeep<Array3D>(array)
+    return map(array, (_, e) => e)
 }
 
 export function get(array: Array3D, at: Coords): void {
@@ -39,8 +39,8 @@ export function set(array: Array3D, at: Coords, value: any): any {
 
 export function map(array3D: Array3D, callback: Array3DMapCallback): Array3D {
     return array3D.map<Array3D>((array2D: Array2D, x: number) =>
-        array2D.map((array1D: Array1D, y: number) =>
-            array1D.map((elem: any, z: number) =>
+        array2D.map<Array2D>((array1D: Array1D, y: number) =>
+            array1D.map<Array1D>((elem: any, z: number) =>
                 callback({ x, y, z }, elem, parseInt(`${y}${z}${x}`, 3))
             )
         )
