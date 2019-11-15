@@ -9,9 +9,8 @@ function Cube({
     onHoverMove,
     onClick,
     selectedPlane,
+    grid,
 }) {
-    const [gridState, dispatch] = useReducer(GridReducer, defaultState)
-
     const isInArea = (position, area) =>
         position.reduce(
             (acc, cur, i) => (area[i] == null || cur == area[i]) && acc,
@@ -33,17 +32,18 @@ function Cube({
                 <meshBasicMaterial attach="material" color={'white'} />
             </mesh>
 
-            {map(gridState, ({ x, y, z }, value, index) => {
+            {map(grid, ({ x, y, z }, value, index) => {
                 const position = [x, y, z].map(c => c - 1)
+                const inPlane = isInPlane(position, selectedPlane)
                 return (
                     <Cell
                         position={position}
                         key={index}
                         onHoverMove={onHoverMove}
                         onClick={onClick}
-                        stopPropagation={isInPlane(position, selectedPlane)}
+                        stopPropagation={inPlane}
                         focus={isInArea(position, focusArea)}
-                        visible={isInPlane(position, selectedPlane)}
+                        visible={inPlane}
                         player={value}
                     ></Cell>
                 )
