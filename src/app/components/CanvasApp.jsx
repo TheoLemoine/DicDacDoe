@@ -5,7 +5,7 @@ import { grid as gridActions } from '../actions/creators/index.ts'
 import GridContext from './providers/gridProvider'
 import Cube from './three/Cube.jsx'
 import CameraControls from './three/CameraControls.jsx'
-import { Vector3 } from 'three'
+import { Vector3, OrthographicCamera } from 'three'
 
 function CanvasApp() {
     const [hoverPosition, setHoverPosition] = useState([0, 0, 0])
@@ -70,6 +70,7 @@ function CanvasApp() {
                 setSelectedPlane(null)
                 setFocusArea([null, null, null])
             }}
+            // orthographic={true}
         >
             <Cube
                 hoverPosition={hoverPosition}

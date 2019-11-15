@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { extend, useThree, useFrame } from 'react-three-fiber'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { Color, AxesHelper } from 'three'
+import { Color } from 'three'
 
 extend({ OrbitControls })
 
