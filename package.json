@@ -1,39 +1,42 @@
 {
-    "name": "dicdacdoe",
-    "version": "1.0.0",
-    "description": "3D tic tac toe",
-    "main": "src/app/index.js",
-    "license": "MIT",
-    "scripts": {
-        "start": "webpack-dev-server",
-        "build": "webpack",
-        "deploy": "webpack && surge ./dist dicdacdoe.surge.sh"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.7.2",
-        "@babel/preset-env": "^7.7.1",
-        "babel": "^6.23.0",
-        "babel-cli": "^6.26.0",
-        "babel-loader": "^8.0.6",
-        "copy-webpack-plugin": "^5.0.5",
-        "prettier": "^1.19.1",
-        "webpack": "^4.41.2",
-        "webpack-cli": "^3.3.10",
-        "webpack-copy-plugin": "^0.0.4",
-        "webpack-dev-server": "^3.9.0"
-    },
-    "dependencies": {
-        "@babel/preset-react": "^7.7.0",
-        "@babel/preset-typescript": "^7.7.2",
-        "@types/lodash": "^4.14.146",
-        "@types/react": "^16.9.11",
-        "lodash": "^4.17.15",
-        "prop-types": "^15.7.2",
-        "react": "^16.11.0",
-        "react-dom": "^16.11.0",
-        "react-spring": "^8.0.27",
-        "react-three-fiber": "^3.0.13",
-        "surge": "^0.21.3",
-        "three": "^0.110.0"
-    }
+  "name": "dicdacdoe",
+  "version": "1.0.0",
+  "description": "3D tic tac toe",
+  "main": "src/app/index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack",
+    "deploy": "webpack && surge ./dist dicdacdoe.surge.sh",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^8.0.6",
+    "copy-webpack-plugin": "^5.0.5",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-copy-plugin": "^0.0.4",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "dependencies": {
+    "@babel/preset-react": "^7.7.0",
+    "@babel/preset-typescript": "^7.7.2",
+    "@types/jest": "^24.0.23",
+    "@types/lodash": "^4.14.146",
+    "@types/react": "^16.9.11",
+    "lodash": "^4.17.15",
+    "prop-types": "^15.7.2",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-spring": "^8.0.27",
+    "react-three-fiber": "^3.0.13",
+    "surge": "^0.21.3",
+    "three": "^0.110.0"
+  }
 }
