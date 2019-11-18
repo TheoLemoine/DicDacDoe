@@ -15,3 +15,18 @@ export function multiplyBy(coords: Coords, factor: number) {
         z: coords.z * factor,
     }
 }
+
+export function indexToCoords(index: number) {
+    const [z, y, x] = index
+        .toString(3)
+        .padStart(3, '0')
+        .split('')
+        .map(n => parseInt(n))
+
+    return { x, y, z }
+}
+
+export function coordsToIndex(coords: Coords) {
+    const { x, y, z } = coords
+    return parseInt(`${z}${y}${x}`, 3)
+}

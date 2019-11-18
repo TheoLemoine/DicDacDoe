@@ -64,12 +64,13 @@ export function flatten(array3D: Array3D) {
     return _.flattenDeep(array3D)
 }
 
-export function coordsIn3DArray(coords: Coords) {
+export function coordsIn(array3D: Array3D, coords: Coords) {
+    // array 3D is expected to be a cube
+    // so the lenght is the first array lenght
+
     for (const axis in coords) {
         const coord = coords[axis]
-
-        if (coord >= 0 && coord <= 2) return false
+        if (coord < 0 || coord >= array3D.length) return false
     }
-
     return true
 }

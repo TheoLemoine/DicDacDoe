@@ -3,7 +3,7 @@ module.exports = {
     moduleDirectories: ['node_modules'],
 
     collectCoverage: true,
-    coverageDirectory: 'coverage',
+    coverageDirectory: '../coverage',
     collectCoverageFrom: ['**/*.[jt]s?(x)'],
 
     // An array of file extensions your modules use

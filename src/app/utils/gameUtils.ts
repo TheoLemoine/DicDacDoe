@@ -1,5 +1,5 @@
-import { Array3D, filter, flatten, map, coordsIn3DArray, get } from './array3D'
-import { Coords, add, multiplyBy } from './coords'
+import { Array3D, filter, flatten, map, coordsIn, get } from './array3D'
+import { Coords, add, multiplyBy, indexToCoords } from './coords'
 
 export const NEEDED_COMBO = 3
 
@@ -19,11 +19,11 @@ export function getAvailableMoves(array3D: Array3D): Array<Coords> {
  */
 function* get3DArroundVectors(): Iterable<Coords> {
     for (const decimalNumber of new Array(3 * 3 * 3).keys()) {
-        const [x, y, z] = decimalNumber
-            .toString(3)
-            .padStart(3, '0')
-            .split('')
-            .map(num => parseInt(num) - 1)
+        const { x, y, z } = add(indexToCoords(decimalNumber), {
+            x: -1,
+            y: -1,
+            z: -1,
+        })
 
         if (x === 0 && y === 0 && z === 0) continue
         else yield { x, y, z }
@@ -52,7 +52,7 @@ function getLineCombo(
     count: number
 ): number {
     const to = add(from, direction)
-    if (coordsIn3DArray(to) && get(array3D, to) === val) {
+    if (coordsIn(array3D, to) && get(array3D, to) === val) {
         return getLineCombo(array3D, val, to, direction, count + 1)
     } else {
         return count

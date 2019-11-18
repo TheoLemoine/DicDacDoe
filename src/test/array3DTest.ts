@@ -112,3 +112,48 @@ test('should filter be immutable', () => {
     const newArray = array3D.filter(testArray, (coords, elem) => true)
     expect(newArray).not.toBe(testArray)
 })
+
+const flattenedArray = [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    42,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+]
+
+test('should flatten return a flatened array', () => {
+    const newArray = array3D.flatten(testArray)
+    expect(newArray).toEqual(flattenedArray)
+})
+
+test('should coordsIn returns true when coords are in array limits', () => {
+    const isInArray = array3D.coordsIn(testArray, { x: 1, y: 2, z: 0 })
+    expect(isInArray).toBe(true)
+})
+
+test('should coordsIn returns false when coords are in out limits', () => {
+    const isInArray = array3D.coordsIn(testArray, { x: 14, y: 8, z: 16 })
+    expect(isInArray).toBe(false)
+})
