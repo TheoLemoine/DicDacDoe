@@ -6,7 +6,7 @@ const GameContext = createContext(null)
 export const GameProvider = ({ children }) => {
     const [state, dispatch] = useReducer(game, {
         winner: null,
-        current_player: null,
+        current_player: 1,
         players: [],
     })
 
