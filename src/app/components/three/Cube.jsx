@@ -2,6 +2,18 @@ import React from 'react'
 import Cell from './Cell.jsx'
 import { map } from '../../utils/array3D.ts'
 
+const isInArea = (position, area) =>
+    position.reduce(
+        (acc, cur, i) => (area[i] == null || cur == area[i]) && acc,
+        true
+    )
+
+const isInPlane = (position, plane) => {
+    if (plane == null) return true
+    const axes = ['x', 'y', 'z']
+    const axis = axes.indexOf(plane.axis)
+    return position[axis] == plane.value
+}
 function Cube({
     hoverPosition,
     focusArea,
@@ -10,19 +22,6 @@ function Cube({
     selectedPlane,
     grid,
 }) {
-    const isInArea = (position, area) =>
-        position.reduce(
-            (acc, cur, i) => (area[i] == null || cur == area[i]) && acc,
-            true
-        )
-
-    const isInPlane = (position, plane) => {
-        if (plane == null) return true
-        const axes = ['x', 'y', 'z']
-        const axis = axes.indexOf(plane.axis)
-        return position[axis] == plane.value
-    }
-
     return (
         <>
             <axesHelper args={[5]} />
