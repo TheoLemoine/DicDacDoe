@@ -5,7 +5,7 @@ import { grid as gridActions } from '../actions/creators/index.ts'
 import GridContext from './providers/gridProvider'
 import Cube from './three/Cube.jsx'
 import CameraControls from './three/CameraControls.jsx'
-import { Vector3 } from 'three'
+import { Vector3, OrthographicCamera } from 'three'
 
 function CanvasApp() {
     const [hoverPosition, setHoverPosition] = useState([0, 0, 0])
@@ -14,24 +14,24 @@ function CanvasApp() {
     const [isVertical, setIsVertical] = useState(false)
     const [grid, dispatch] = useContext(GridContext)
 
-    const updateFocusAreaFromPlane = (direction, cubePosition) => {
+    const processFocusArea = (direction, cubePosition) => {
         if ((direction == 'x' || direction == 'z') && !isVertical) {
-            setFocusArea([null, cubePosition[1], null])
+            return [null, cubePosition[1], null]
         }
         if (direction == 'x' && isVertical) {
-            setFocusArea([null, null, cubePosition[2]])
+            return [null, null, cubePosition[2]]
         }
         if (direction == 'z' && isVertical) {
-            setFocusArea([cubePosition[0], null, null])
+            return [cubePosition[0], null, null]
         }
-        if (direction == 'y' && isVertical) {
-            setFocusArea([null, cubePosition[1], null])
+        if (direction == 'y') {
+            return [null, cubePosition[1], null]
         }
     }
 
     const onHoverMove = (point, direction, cubePosition) => {
         if (selectedPlane == null) {
-            updateFocusAreaFromPlane(direction, cubePosition)
+            setFocusArea(processFocusArea(direction, cubePosition))
         } else {
             setFocusArea([...cubePosition])
         }
@@ -51,7 +51,10 @@ function CanvasApp() {
             setFocusArea([null, null, null])
         } else if (player == null) {
             const [x, y, z] = focusArea.map(c => c + 1)
+
             dispatch(gridActions.add(new Vector3(x, y, z), 1))
+            setSelectedPlane(null)
+            setFocusArea([null, null, null])
         }
     }
 
@@ -67,6 +70,7 @@ function CanvasApp() {
                 setSelectedPlane(null)
                 setFocusArea([null, null, null])
             }}
+            // orthographic={true}
         >
             <Cube
                 hoverPosition={hoverPosition}

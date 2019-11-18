@@ -1,7 +1,6 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import Cell from './Cell.jsx'
 import { map } from '../../utils/array3D.ts'
-import GridContext from '../providers/gridProvider'
 
 function Cube({
     hoverPosition,
