@@ -1,17 +1,16 @@
 import React, { useCallback } from 'react'
-import { Vector3, DoubleSide } from 'three'
 
-import {
-    grid as gridActions,
-    game as gameActions,
-} from '../../actions/creators/index.ts'
+import { grid as gridActions, game as gameActions } from '../../actions/creators/index.ts'
 import { useGrid } from '../providers/gridProvider'
 import { useGame } from '../providers/gameProvider'
 
-import CellEdges from './CellEdges'
+import BoxEdges from './BoxEdges'
 import CellSelection from './CellSelection'
 
 import * as Coords from '../../utils/coords'
+import Circle from './Circle'
+import Cross from './Cross'
+import CellContent from './CellContent'
 
 function Cell({ position, player }) {
     const [game, gameDispatch] = useGame()
@@ -25,10 +24,8 @@ function Cell({ position, player }) {
     const isSelectingCell = selectedPlane !== null
     const isSelectingPlane = selectedPlane === null
     const isInSelectedPlane = isSelectingCell && position[1] === selectedPlane
-    const isInHoveredPlane =
-        hoveredPlane !== null && position[1] === hoveredPlane
-    const isCellHovered =
-        hoveredCell !== null && Coords.equals(hoveredCell, positionObj)
+    const isInHoveredPlane = hoveredPlane !== null && position[1] === hoveredPlane
+    const isCellHovered = hoveredCell !== null && Coords.equals(hoveredCell, positionObj)
 
     const onHoverMove = useCallback(
         e => {
@@ -38,7 +35,7 @@ function Cell({ position, player }) {
                 gridDispatch(gridActions.setHoveredPlane(position[1]))
             }
 
-            if (isSelectingCell) {
+            if (isSelectingCell && isInSelectedPlane) {
                 gridDispatch(gridActions.setHoveredCell(positionObj))
             }
         },
@@ -53,83 +50,63 @@ function Cell({ position, player }) {
                 gridDispatch(gridActions.setSelectedPlane(position[1]))
             }
 
-            if (isSelectingCell && isEmpty) {
+            if (isSelectingCell && isInSelectedPlane && isEmpty) {
                 const [x, y, z] = position.map(c => c + 1)
                 gridDispatch(gridActions.add({ x, y, z }, game.current_player))
                 gridDispatch(gridActions.resetSelection())
-                gameDispatch(
-                    gameActions.setCurrentPlayer(
-                        game.current_player == 1 ? 2 : 1
-                    )
-                )
+                gameDispatch(gameActions.setCurrentPlayer(game.current_player == 1 ? 2 : 1))
             }
         },
         [gridState, player, position]
     )
 
     const getEdgesOpacity = useCallback(() => {
-        if (isSelectingPlane) return 0.7
+        if (isSelectingPlane) return 0.1
         if (isSelectingCell && isInSelectedPlane) return 1
-        if (isSelectingCell && !isInSelectedPlane) return 0.1
+        if (isSelectingCell && !isInSelectedPlane) return 0.05
     }, [position, gridState])
 
-    const getSelectionOpacity = useCallback(() => {
-        if (isSelectingPlane && isInHoveredPlane) return 0.3
-        if (isSelectingPlane && !isInHoveredPlane) return 0
-        if (isSelectingCell && isCellHovered) return 0.3
-        if (isSelectingCell && !isCellHovered) return 0
+    // const getSelectionOpacity = useCallback(() => {
+    //     if (isSelectingPlane && isInHoveredPlane) return 0.3
+    //     if (isSelectingPlane && !isInHoveredPlane) return 0
+    //     if (isSelectingCell && isCellHovered) return 0.3
+    //     if (isSelectingCell && !isCellHovered) return 0
+    // }, [position, gridState])
+
+    const getContentOpacity = useCallback(() => {
+        if (isSelectingCell && !isEmpty) return 1
+        if (isSelectingCell && isCellHovered && isEmpty) return 0.8
+        if (isSelectingPlane && isInHoveredPlane) return 1
+        if (isSelectingPlane && !isInHoveredPlane) return 0.8
     }, [position, gridState])
+
+    const ContentComponent = () => {
+        if (player === 1 || (isCellHovered && game.current_player === 1)) {
+            return <Circle position={[0, 0, 0]} opacity={getContentOpacity()} />
+        }
+        if (player === 2 || (isCellHovered && game.current_player === 2)) {
+            return <Cross position={[0, 0, 0]} opacity={getContentOpacity()} />
+        }
+        return null
+    }
 
     return (
-        <>
+        <object3D position={position}>
             <CellSelection
-                position={position}
-                opacity={getSelectionOpacity()}
+                position={[0, 0, 0]}
+                opacity={0}
                 onPointerMove={onHoverMove}
                 onClick={onClick}
             />
-            <CellEdges position={position} opacity={getEdgesOpacity()} />
-            {player == 1 && (
-                <mesh position={position}>
-                    <torusGeometry
-                        attach="geometry"
-                        args={[0.41, 0.04, 10, 15]}
-                    />
-                    <meshBasicMaterial
-                        attach="material"
-                        color={0x0000ff}
-                        side={DoubleSide}
-                    />
-                </mesh>
-            )}
-            {player == 2 && (
-                <mesh position={position}>
-                    <cylinderGeometry
-                        attach="geometry"
-                        args={[0.04, 0.04, 0.8, 15, 1]}
-                    />
-                    <meshBasicMaterial
-                        attach="material"
-                        color={0xff0000}
-                        side={DoubleSide}
-                    />
-                </mesh>
-            )}
-            {/* {crossModel != null && circleModel != null && (
-                <primitive
-                    scale={[0.5, 0.5, 0.5]}
-                    position={[0, 0, 0]}
-                    object={pcrossModel.scene}
-                />
-            )} */}
-            {/* {circleModel != null && player == 2 && (
-                <primitive
-                    scale={[0.5, 0.5, 0.5]}
-                    position={[0, 0, 0]}
-                    object={circleModel.scene}
-                />
-            )} */}
-        </>
+            <BoxEdges
+                position={[0, 0, 0]}
+                opacity={getEdgesOpacity()}
+                size={[0.999, 0.999, 0.999]}
+            />
+            <CellContent>
+                <ContentComponent />
+            </CellContent>
+        </object3D>
     )
 }
 
