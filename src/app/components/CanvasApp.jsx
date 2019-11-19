@@ -1,103 +1,18 @@
-import React, { useState, useCallback } from 'react'
-import { Canvas } from 'react-three-fiber'
-import {
-    grid as gridActions,
-    game as gameActions,
-} from '../actions/creators/index.ts'
+import React from 'react'
 
 import { useGrid } from './providers/gridProvider'
-import { useGame } from './providers/gameProvider'
-import Cube from './three/Cube.jsx'
-import CameraControls from './three/CameraControls.jsx'
+
 import { Vector3 } from 'three'
+import CameraControls from './three/CameraControls.jsx'
+import Cube from './three/Cube.jsx'
+import CanvasBridge from './CanvasBridge'
 
 function CanvasApp() {
-    const [focusArea, setFocusArea] = useState([null, null, null])
-    const [selectedPlane, setSelectedPlane] = useState(null)
-    const [isVertical, setIsVertical] = useState(false)
-    const [gridState, gridDispatch] = useGrid()
-    const [game, gameDispatch] = useGame()
-
-    const processFocusArea = useCallback(
-        (direction, cubePosition) => {
-            if ((direction == 'x' || direction == 'z') && !isVertical) {
-                return [null, cubePosition[1], null]
-            }
-            if (direction == 'x' && isVertical) {
-                return [null, null, cubePosition[2]]
-            }
-            if (direction == 'z' && isVertical) {
-                return [cubePosition[0], null, null]
-            }
-            if (direction == 'y') {
-                return [null, cubePosition[1], null]
-            }
-        },
-        [isVertical]
-    )
-
-    const onHoverMove = useCallback(
-        (direction, cubePosition) => {
-            if (selectedPlane == null) {
-                setFocusArea(processFocusArea(direction, cubePosition))
-            } else {
-                setFocusArea([...cubePosition])
-            }
-        },
-        [selectedPlane, processFocusArea]
-    )
-
-    const onClick = useCallback(
-        cellPlayer => {
-            if (selectedPlane == null) {
-                const axes = ['x', 'y', 'z']
-                setSelectedPlane(
-                    focusArea.reduce((acc, cur, i) =>
-                        acc != null || cur == null
-                            ? acc
-                            : { axis: axes[i], value: cur }
-                    )
-                )
-                setFocusArea([null, null, null])
-            } else if (cellPlayer == null) {
-                const [x, y, z] = focusArea.map(c => c + 1)
-
-                gridDispatch(
-                    gridActions.add(new Vector3(x, y, z), game.current_player)
-                )
-                gameDispatch(
-                    gameActions.setCurrentPlayer(
-                        game.current_player == 1 ? 2 : 1
-                    )
-                )
-
-                setSelectedPlane(null)
-                setFocusArea([null, null, null])
-            }
-        },
-        [selectedPlane, focusArea]
-    )
+    const [gridState] = useGrid()
 
     return (
-        <Canvas
-            style={{ height: '100vh' }}
-            onMouseDown={e => {
-                if (e.button == 2) {
-                    setIsVertical(!isVertical)
-                }
-            }}
-            onPointerMissed={() => {
-                setSelectedPlane(null)
-                setFocusArea([null, null, null])
-            }}
-        >
-            <Cube
-                focusArea={focusArea}
-                selectedPlane={selectedPlane}
-                onHoverMove={onHoverMove}
-                onClick={onClick}
-                grid={gridState.grid}
-            />
+        <CanvasBridge>
+            <Cube grid={gridState.grid} />
             <ambientLight intensity={0.3} color={0xffffff} />
             <directionalLight
                 intensity={1}
@@ -105,7 +20,7 @@ function CanvasApp() {
                 position={new Vector3(10, 10, 8)}
             />
             <CameraControls />
-        </Canvas>
+        </CanvasBridge>
     )
 }
 export default CanvasApp

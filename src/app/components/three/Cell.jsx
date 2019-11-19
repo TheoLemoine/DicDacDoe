@@ -1,119 +1,80 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { Vector3, BoxBufferGeometry, DoubleSide } from 'three'
+import React, { useCallback } from 'react'
+import { Vector3, DoubleSide } from 'three'
+
+import {
+    grid as gridActions,
+    game as gameActions,
+} from '../../actions/creators/index.ts'
+import { useGrid } from '../providers/gridProvider'
+import { useGame } from '../providers/gameProvider'
+
 import CellEdges from './CellEdges'
 import CellSelection from './CellSelection'
 
-const AXES = [
-    {
-        axis: 'x',
-        vector: new Vector3(1, 0, 0),
-    },
-    {
-        axis: 'y',
-        vector: new Vector3(0, 1, 0),
-    },
-    {
-        axis: 'z',
-        vector: new Vector3(0, 0, 1),
-    },
-]
+function Cell({ position, player }) {
+    const [game, gameDispatch] = useGame()
+    const [gridState, gridDispatch] = useGrid()
+    const { selectedPlane, hoveredPlane, hoveredCell } = gridState
 
-const getAxisAngle = (axis, target) => {
-    const angle = axis.vector.angleTo(target) % Math.PI
-    if (angle > Math.PI / 2) return Math.abs(angle - Math.PI)
-    return angle
-}
-
-function Cell({
-    position,
-    player,
-    onHoverMove,
-    focus,
-    onClick,
-    visible,
-    stopPropagation,
-}) {
-    const [borderModel, setBorderModel] = useState(null)
-    const [crossModel, setCrossModel] = useState(null)
-    const [circleModel, setCircleModel] = useState(null)
-
-    useEffect(() => {
-        const loader = new GLTFLoader()
-        loader.load('../../../assets/cube.gltf', setBorderModel)
-        loader.load('../../../assets/cross.gltf', setCrossModel)
-        loader.load('../../../assets/circle.gltf', setCircleModel)
-    }, [])
-
-    const getDirection = useCallback(
-        hoverPoint => {
-            const start = new Vector3(...position)
-            hoverPoint.sub(start)
-            return AXES.reduce((acc, cur) => {
-                if (acc == null) return cur
-                return getAxisAngle(cur, hoverPoint) <
-                    getAxisAngle(acc, hoverPoint)
-                    ? cur
-                    : acc
-            }, null).axis
-        },
-        [position]
-    )
-
-    const move = useCallback(
+    const onHoverMove = useCallback(
         e => {
-            if (stopPropagation) e.stopPropagation()
-            const { x, y, z } = e.point
-            const point = new Vector3(x, y, z)
-            const direction = getDirection(point)
-            onHoverMove(direction, position)
-        },
-        [stopPropagation, position, onHoverMove, getDirection]
-    )
-
-    const click = useCallback(
-        e => {
-            if (stopPropagation) {
+            if (selectedPlane === null || position[1] === selectedPlane)
                 e.stopPropagation()
-                onClick(player, position)
+
+            if (selectedPlane === null) {
+                gridDispatch(gridActions.setHoveredPlane(position[1]))
+            } else {
+                const [x, y, z] = position
+                gridDispatch(gridActions.setHoveredCell({ x, y, z }))
             }
         },
-        [stopPropagation, player, position, onClick]
+        [gridState, position]
+    )
+
+    const onClick = useCallback(
+        e => {
+            if (selectedPlane === null || position[1] === selectedPlane)
+                e.stopPropagation()
+
+            if (selectedPlane === null) {
+                gridDispatch(gridActions.setSelectedPlane(position[1]))
+            } else if (player == null) {
+                const [x, y, z] = focusArea.map(c => c + 1)
+                gridDispatch(
+                    gridActions.add(new Vector3(x, y, z), game.current_player)
+                )
+                gridDispatch(gridActions.setSelectedPlane(null))
+                gameDispatch(
+                    gameActions.setCurrentPlayer(
+                        game.current_player == 1 ? 2 : 1
+                    )
+                )
+            }
+        },
+        [player, position]
     )
 
     const getOpacity = useCallback(() => {
-        if (player) {
-            return 0.5
-        }
-        if (!visible) {
-            return 0
-        }
-        if (focus) {
+        if (
+            player ||
+            hoveredPlane === null ||
+            position[1] === hoveredPlane ||
+            (selectedPlane !== null && position[1] === selectedPlane)
+        ) {
             return 0.5
         }
         return 0
-    }, [visible, focus])
-
-    const getModel = useCallback(() => {
-        switch (player) {
-            case 1:
-                return 'red'
-            case 2:
-                return 'blue'
-            default:
-                return 'white'
-        }
-    }, [player])
+    }, [player, hoveredPlane, position, selectedPlane])
 
     return (
         <>
             <CellSelection
                 position={position}
                 opacity={getOpacity()}
-                onPointerMove={move}
-                onClick={click}
+                onPointerMove={onHoverMove}
+                onClick={onClick}
             />
-            <CellEdges position={position} opacity={visible ? 0.5 : 0.2} />
+            <CellEdges position={position} opacity={0.5} />
             {player == 1 && (
                 <mesh position={position}>
                     <torusGeometry

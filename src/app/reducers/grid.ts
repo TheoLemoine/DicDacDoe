@@ -9,11 +9,6 @@ export type GridState = {
     hoveredCell: Coords.Coords | null
 }
 
-export enum SelectionStates {
-    PLANE,
-    CELL,
-}
-
 export default (state: GridState, action: any) => {
     switch (action.type) {
         case GRID.ADD:

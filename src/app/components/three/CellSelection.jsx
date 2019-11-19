@@ -12,7 +12,7 @@ function CellSelection({ position, onClick, onPointerMove, opacity }) {
                 attach="geometry"
                 args={[0.9999, 0.9999, 0.9999]}
             />
-            <meshPhongMaterial
+            <meshBasicMaterial
                 attach="material"
                 color={0xffffff}
                 transparent={true}
