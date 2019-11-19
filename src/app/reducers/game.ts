@@ -1,6 +1,12 @@
 import { WINNER, PLAYERS, CURRENT_PLAYER } from '../actions/types/index'
 
-export default (state: any, action: any) => {
+type GameState<T> = {
+    winner: T
+    current_player: T
+    players: Array<T>
+}
+
+export default (state: GameState<any>, action: any) => {
     switch (action.type) {
         case WINNER.SET:
             return {

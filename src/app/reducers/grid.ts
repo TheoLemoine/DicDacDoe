@@ -1,16 +1,24 @@
 import { GRID } from '../actions/types/index'
 import { Array3D, set, makeEmpty } from '../utils/array3D'
+import { Coords } from '../utils/coords'
 
-export default (grid: Array3D, action: any) => {
+type GridState = {
+    grid: Array3D
+    selectedPlane: number | null
+    hoveredPlane: number | null
+    hoveredCell: Coords | null
+}
+
+export default (state: GridState, action: any) => {
     switch (action.type) {
         case GRID.ADD:
             const { coords, value } = action
-            return set(grid, coords, value)
+            return { ...state, grid: set(state.grid, coords, value) }
 
         case GRID.RESET:
-            return makeEmpty(3, 3, null)
+            return { ...state, grid: makeEmpty(3, 3, null) }
 
         default:
-            return grid
+            return state
     }
 }
