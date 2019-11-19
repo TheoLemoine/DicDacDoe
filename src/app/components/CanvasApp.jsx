@@ -1,12 +1,12 @@
-import React, { useState, useContext, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Canvas } from 'react-three-fiber'
 import {
     grid as gridActions,
     game as gameActions,
 } from '../actions/creators/index.ts'
 
-import GridContext from './providers/gridProvider'
-import GameContext from './providers/gameProvider'
+import { useGrid } from './providers/gridProvider'
+import { useGame } from './providers/gameProvider'
 import Cube from './three/Cube.jsx'
 import CameraControls from './three/CameraControls.jsx'
 import { Vector3 } from 'three'
@@ -15,8 +15,8 @@ function CanvasApp() {
     const [focusArea, setFocusArea] = useState([null, null, null])
     const [selectedPlane, setSelectedPlane] = useState(null)
     const [isVertical, setIsVertical] = useState(false)
-    const [grid, gridDispatch] = useContext(GridContext)
-    const [game, gameDispatch] = useContext(GameContext)
+    const [grid, gridDispatch] = useGrid()
+    const [game, gameDispatch] = useGame()
 
     const processFocusArea = useCallback(
         (direction, cubePosition) => {

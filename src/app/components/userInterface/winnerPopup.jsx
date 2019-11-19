@@ -1,10 +1,23 @@
-import React from 'react'
-import { any } from 'prop-types'
+import React, { useContext } from 'react'
 
-const WinnerPopup = props => {
-    const { winner } = props
+import { useGame } from '../providers/gameProvider'
+import { useGrid } from '../providers/gridProvider'
 
-    const resetGame = () => {}
+import {
+    grid as gridActions,
+    game as gameActions,
+} from '../../actions/creators/index'
+
+const WinnerPopup = () => {
+    const [game, dispatchToGame] = useGame()
+    const [grid, dispatchToGrid] = useGrid()
+
+    const { winner } = game
+
+    const resetGame = () => {
+        dispatchToGrid(gridActions.reset())
+        dispatchToGame(gameActions.setWinner(null))
+    }
 
     return (
         <div className="winner-popup">
@@ -12,10 +25,6 @@ const WinnerPopup = props => {
             <button onClick={resetGame}>Play again</button>
         </div>
     )
-}
-
-WinnerPopup.propTypes = {
-    winner: any,
 }
 
 export default WinnerPopup

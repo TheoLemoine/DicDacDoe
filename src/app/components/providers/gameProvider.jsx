@@ -1,7 +1,7 @@
-import React, { useReducer, createContext } from 'react'
+import React, { useReducer, createContext, useContext } from 'react'
 import game from '../../reducers/game.ts'
 
-const GameContext = createContext(null)
+export const GameContext = createContext(null)
 
 export const GameProvider = ({ children }) => {
     const [state, dispatch] = useReducer(game, {
@@ -17,4 +17,4 @@ export const GameProvider = ({ children }) => {
     )
 }
 
-export default GameContext
+export const useGame = () => useContext(GameContext)

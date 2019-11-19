@@ -6,8 +6,8 @@ import { GameProvider } from './providers/gameProvider'
 import { GridProvider } from './providers/gridProvider'
 
 import CanvasApp from './CanvasApp'
-import UserInterface from './userInterface/index.jsx'
-import Cursor from './userInterface/Cursor.jsx'
+import UserInterface from './userInterface/index'
+import Cursor from './userInterface/Cursor'
 
 function App() {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
