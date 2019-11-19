@@ -14,22 +14,9 @@ const isInPlane = (position, plane) => {
     const axis = axes.indexOf(plane.axis)
     return position[axis] == plane.value
 }
-function Cube({
-    hoverPosition,
-    focusArea,
-    onHoverMove,
-    onClick,
-    selectedPlane,
-    grid,
-}) {
+function Cube({ focusArea, onHoverMove, onClick, selectedPlane, grid }) {
     return (
         <>
-            <axesHelper args={[5]} />
-            <mesh position={hoverPosition}>
-                <boxBufferGeometry attach="geometry" args={[0.1, 0.1, 0.1]} />
-                <meshBasicMaterial attach="material" color={'white'} />
-            </mesh>
-
             {map(grid, ({ x, y, z }, value, index) => {
                 const position = [x, y, z].map(c => c - 1)
                 const inPlane = isInPlane(position, selectedPlane)

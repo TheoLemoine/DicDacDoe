@@ -12,7 +12,6 @@ import CameraControls from './three/CameraControls.jsx'
 import { Vector3 } from 'three'
 
 function CanvasApp() {
-    const [hoverPosition, setHoverPosition] = useState([0, 0, 0])
     const [focusArea, setFocusArea] = useState([null, null, null])
     const [selectedPlane, setSelectedPlane] = useState(null)
     const [isVertical, setIsVertical] = useState(false)
@@ -38,13 +37,12 @@ function CanvasApp() {
     )
 
     const onHoverMove = useCallback(
-        (point, direction, cubePosition) => {
+        (direction, cubePosition) => {
             if (selectedPlane == null) {
                 setFocusArea(processFocusArea(direction, cubePosition))
             } else {
                 setFocusArea([...cubePosition])
             }
-            setHoverPosition(point)
         },
         [selectedPlane, processFocusArea]
     )
@@ -94,7 +92,6 @@ function CanvasApp() {
             }}
         >
             <Cube
-                hoverPosition={hoverPosition}
                 focusArea={focusArea}
                 selectedPlane={selectedPlane}
                 onHoverMove={onHoverMove}

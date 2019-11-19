@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { Vector3, BoxGeometry } from 'three'
+import { Vector3, BoxBufferGeometry, DoubleSide } from 'three'
+import CellEdges from './CellEdges'
+import CellSelection from './CellSelection'
 
 const AXES = [
     {
@@ -63,8 +65,8 @@ function Cell({
             if (stopPropagation) e.stopPropagation()
             const { x, y, z } = e.point
             const point = new Vector3(x, y, z)
-            const direction = getDirection(point.clone())
-            onHoverMove([x, y, z], direction, position)
+            const direction = getDirection(point)
+            onHoverMove(direction, position)
         },
         [stopPropagation, position, onHoverMove, getDirection]
     )
@@ -80,16 +82,19 @@ function Cell({
     )
 
     const getOpacity = useCallback(() => {
-        if (!visible) {
+        if (player) {
             return 0.1
         }
-        if (focus) {
-            return 0.3
+        if (!visible) {
+            return 0
         }
-        return 0.2
+        if (focus) {
+            return 0.1
+        }
+        return 0
     }, [visible, focus])
 
-    const getColor = useCallback(() => {
+    const getModel = useCallback(() => {
         switch (player) {
             case 1:
                 return 'red'
@@ -101,29 +106,55 @@ function Cell({
     }, [player])
 
     return (
-        <mesh position={position} onPointerMove={move} onClick={click}>
-            <boxBufferGeometry attach="geometry" args={[0.9, 0.9, 0.9]} />
-            <meshPhongMaterial
-                attach="material"
-                color={getColor()}
-                transparent={true}
+        <>
+            <CellSelection
+                position={position}
                 opacity={getOpacity()}
+                onPointerMove={move}
+                onClick={click}
             />
-            {crossModel != null && player == 1 && (
+            <CellEdges position={position} opacity={visible ? 0.5 : 0.2} />
+            {player == 1 && (
+                <mesh position={position}>
+                    <torusGeometry
+                        attach="geometry"
+                        args={[0.41, 0.04, 10, 15]}
+                    />
+                    <meshBasicMaterial
+                        attach="material"
+                        color={0x0000ff}
+                        side={DoubleSide}
+                    />
+                </mesh>
+            )}
+            {player == 2 && (
+                <mesh position={position}>
+                    <cylinderGeometry
+                        attach="geometry"
+                        args={[0.04, 0.04, 0.8, 15, 1]}
+                    />
+                    <meshBasicMaterial
+                        attach="material"
+                        color={0xff0000}
+                        side={DoubleSide}
+                    />
+                </mesh>
+            )}
+            {/* {crossModel != null && circleModel != null && (
                 <primitive
                     scale={[0.5, 0.5, 0.5]}
                     position={[0, 0, 0]}
-                    object={crossModel.scene}
+                    object={pcrossModel.scene}
                 />
-            )}
-            {circleModel != null && player == 2 && (
+            )} */}
+            {/* {circleModel != null && player == 2 && (
                 <primitive
                     scale={[0.5, 0.5, 0.5]}
                     position={[0, 0, 0]}
                     object={circleModel.scene}
                 />
-            )}
-        </mesh>
+            )} */}
+        </>
     )
 }
 
