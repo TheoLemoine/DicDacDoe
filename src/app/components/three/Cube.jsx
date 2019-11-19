@@ -18,7 +18,7 @@ const isInPlane = (position, plane) => {
 function Cube({ focusArea, onHoverMove, onClick, selectedPlane, grid }) {
     return (
         <>
-            {map(grid.grid, ({ x, y, z }, value, index) => {
+            {map(grid, ({ x, y, z }, value, index) => {
                 const position = [x, y, z].map(c => c - 1)
                 const inPlane = isInPlane(position, selectedPlane)
                 return (
