@@ -14,6 +14,7 @@ const isInPlane = (position, plane) => {
     const axis = axes.indexOf(plane.axis)
     return position[axis] == plane.value
 }
+
 function Cube({ focusArea, onHoverMove, onClick, selectedPlane, grid }) {
     return (
         <>

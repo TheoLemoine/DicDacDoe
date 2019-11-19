@@ -83,13 +83,13 @@ function Cell({
 
     const getOpacity = useCallback(() => {
         if (player) {
-            return 0.1
+            return 0.5
         }
         if (!visible) {
             return 0
         }
         if (focus) {
-            return 0.1
+            return 0.5
         }
         return 0
     }, [visible, focus])
