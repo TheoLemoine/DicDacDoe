@@ -5,7 +5,12 @@ import { makeEmpty } from '../../utils/array3D'
 export const GridContext = createContext(null)
 
 export const GridProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(grid, makeEmpty(3, 3, null))
+    const [state, dispatch] = useReducer(grid, {
+        grid: makeEmpty(3, 3, null),
+        selectedPlane: null,
+        hoveredPlane: null,
+        hoveredCell: null,
+    })
 
     return (
         <GridContext.Provider value={[state, dispatch]}>
