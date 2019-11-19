@@ -4,13 +4,8 @@ import { Coords, add, multiplyBy, indexToCoords } from './coords'
 export const NEEDED_COMBO = 3
 
 export function getAvailableMoves(array3D: Array3D): Array<Coords> {
-    const notPlayedCoords = map(array3D, (coords, elem) =>
-        elem === null ? coords : null
-    )
-    const availableMovesCoords = filter(
-        notPlayedCoords,
-        (_, elem) => elem !== null
-    )
+    const notPlayedCoords = map(array3D, (coords, elem) => (elem === null ? coords : null))
+    const availableMovesCoords = filter(notPlayedCoords, (_, elem) => elem !== null)
     return flatten(availableMovesCoords)
 }
 
@@ -57,4 +52,8 @@ function getLineCombo(
     } else {
         return count
     }
+}
+
+export function nextPlayer(player: any, players: Array<any>) {
+    return players[(players.indexOf(player) + 1) % players.length]
 }

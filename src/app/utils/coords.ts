@@ -1,11 +1,7 @@
 export type Coords = { x: number; y: number; z: number }
 
 export function equals(coords1: Coords, coords2: Coords) {
-    return (
-        coords1.x === coords2.x &&
-        coords1.y === coords2.y &&
-        coords1.z === coords2.z
-    )
+    return coords1.x === coords2.x && coords1.y === coords2.y && coords1.z === coords2.z
 }
 
 export function add(coords1: Coords, coords2: Coords): Coords {
