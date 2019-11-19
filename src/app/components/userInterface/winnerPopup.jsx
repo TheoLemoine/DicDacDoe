@@ -9,8 +9,8 @@ import {
 } from '../../actions/creators/index'
 
 const WinnerPopup = () => {
-    const [game, dispatchToGame] = useGame()
     const [grid, dispatchToGrid] = useGrid()
+    const [game, dispatchToGame] = useGame()
 
     const { winner } = game
 
@@ -21,7 +21,7 @@ const WinnerPopup = () => {
 
     return (
         <div className="winner-popup">
-            <h1>player {winner.toString()} won</h1>
+            <h1>player {String(winner)} won</h1>
             <button onClick={resetGame}>Play again</button>
         </div>
     )

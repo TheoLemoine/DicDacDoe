@@ -6,14 +6,12 @@ import WinnerPopup from './winnerPopup'
 
 const UserInterface = () => {
     const [game, dispatch] = useGame()
-    const { current_player, players /*winner*/ } = game
-
-    const winner = null
+    const { current_player, players, winner } = game
 
     return (
         <div className="hud-container">
             <h1 className="hud-current-player">
-                Au joueur {current_player.toString()}
+                Au joueur {String(current_player)}
             </h1>
             {winner !== null && <WinnerPopup winner={winner} />}
         </div>

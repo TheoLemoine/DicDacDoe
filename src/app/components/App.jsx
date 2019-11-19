@@ -24,8 +24,8 @@ function App() {
             <div onMouseMoveCapture={updateMousePos}>
                 <GridProvider>
                     <CanvasApp />
+                    <UserInterface />
                 </GridProvider>
-                <UserInterface />
             </div>
             <Cursor {...mousePos} />
         </GameProvider>
