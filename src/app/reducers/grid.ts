@@ -2,11 +2,16 @@ import { GRID } from '../actions/types/index'
 import { Array3D, set, makeEmpty } from '../utils/array3D'
 import { Coords } from '../utils/coords'
 
-type GridState = {
+export type GridState = {
     grid: Array3D
     selectedPlane: number | null
     hoveredPlane: number | null
     hoveredCell: Coords | null
+}
+
+export enum SelectionStates {
+    PLANE,
+    CELL,
 }
 
 export default (state: GridState, action: any) => {

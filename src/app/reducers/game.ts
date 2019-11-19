@@ -1,9 +1,9 @@
 import { WINNER, PLAYERS, CURRENT_PLAYER } from '../actions/types/index'
 
-type GameState<T> = {
-    winner: T
-    current_player: T
-    players: Array<T>
+export type GameState<PlayerT> = {
+    winner: PlayerT
+    current_player: PlayerT
+    players: Array<PlayerT>
 }
 
 export default (state: GameState<any>, action: any) => {
