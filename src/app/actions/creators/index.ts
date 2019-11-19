@@ -14,6 +14,24 @@ export const grid = {
             type: GRID.RESET,
         }
     },
+    setHoveredPlane(plane) {
+        return {
+            type: GRID.SET_HOVERED_PLANE,
+            plane,
+        }
+    },
+    setHoveredCell(cell) {
+        return {
+            type: GRID.SET_HOVERED_PLANE,
+            cell,
+        }
+    },
+    setSelectedPlane(plane) {
+        return {
+            type: GRID.SET_SELECTED_PLANE,
+            plane,
+        }
+    },
 }
 
 export const game = {

@@ -10,6 +10,18 @@ export default (grid: Array3D, action: any) => {
         case GRID.RESET:
             return makeEmpty(3, 3, null)
 
+        case GRID.SET_HOVERED_PLANE:
+        // const { plane } = action
+        // return plane == state.hoveredPlane ? plane : {...stateContext, hoveredPlane: plane}
+
+        case GRID.SET_SELECTED_PLANE:
+        // const { plane } = action
+        // return plane == state.selectedPlane ? plane : {...stateContext, selectedPlane: plane}
+
+        case GRID.SET_HOVERED_CELL:
+        // const { cell } = action
+        // return Coords.equals(cell, state.hoveredCell) ? cell : {...stateContext, hoveredCell: cell}
+
         default:
             return grid
     }

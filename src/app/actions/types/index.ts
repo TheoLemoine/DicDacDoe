@@ -1,6 +1,9 @@
 export const GRID = {
     ADD: 'app/grid/ADD',
     RESET: 'app/grid/RESET',
+    SET_HOVERED_CELL: 'app/grid/SET_HOVERED_CELL',
+    SET_HOVERED_PLANE: 'app/grid/SET_HOVERED_PLANE',
+    SET_SELECTED_PLANE: 'app/grid/SET_SELECTED_PLANE',
 }
 
 export const PLAYERS = {
