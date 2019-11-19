@@ -15,7 +15,7 @@ function CanvasApp() {
     const [focusArea, setFocusArea] = useState([null, null, null])
     const [selectedPlane, setSelectedPlane] = useState(null)
     const [isVertical, setIsVertical] = useState(false)
-    const [grid, gridDispatch] = useGrid()
+    const [gridState, gridDispatch] = useGrid()
     const [game, gameDispatch] = useGame()
 
     const processFocusArea = useCallback(
@@ -96,7 +96,7 @@ function CanvasApp() {
                 selectedPlane={selectedPlane}
                 onHoverMove={onHoverMove}
                 onClick={onClick}
-                grid={grid}
+                grid={gridState.grid}
             />
             <ambientLight intensity={0.3} color={0xffffff} />
             <directionalLight

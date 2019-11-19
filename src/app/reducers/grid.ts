@@ -1,12 +1,12 @@
 import { GRID } from '../actions/types/index'
 import { Array3D, set, makeEmpty } from '../utils/array3D'
-import { Coords } from '../utils/coords'
+import * as Coords from '../utils/coords'
 
 export type GridState = {
     grid: Array3D
     selectedPlane: number | null
     hoveredPlane: number | null
-    hoveredCell: Coords | null
+    hoveredCell: Coords.Coords | null
 }
 
 export enum SelectionStates {
@@ -24,16 +24,22 @@ export default (state: GridState, action: any) => {
             return { ...state, grid: makeEmpty(3, 3, null) }
 
         case GRID.SET_HOVERED_PLANE:
-        // const { plane } = action
-        // return plane == state.hoveredPlane ? plane : {...stateContext, hoveredPlane: plane}
+            const { plane: hoveredPlane } = action
+            return hoveredPlane == state.hoveredPlane
+                ? state
+                : { ...state, hoveredPlane: hoveredPlane }
 
         case GRID.SET_SELECTED_PLANE:
-        // const { plane } = action
-        // return plane == state.selectedPlane ? plane : {...stateContext, selectedPlane: plane}
+            const { plane: selectedPlane } = action
+            return selectedPlane == state.selectedPlane
+                ? state
+                : { ...state, selectedPlane: selectedPlane }
 
         case GRID.SET_HOVERED_CELL:
-        // const { cell } = action
-        // return Coords.equals(cell, state.hoveredCell) ? cell : {...stateContext, hoveredCell: cell}
+            const { cell: hoveredCell } = action
+            return Coords.equals(hoveredCell, state.hoveredCell)
+                ? state
+                : { ...state, hoveredCell: hoveredCell }
 
         default:
             return state
