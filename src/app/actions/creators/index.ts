@@ -14,19 +14,19 @@ export const grid = {
             type: GRID.RESET,
         }
     },
-    setHoveredPlane(plane) {
+    setHoveredPlane(plane: number) {
         return {
             type: GRID.SET_HOVERED_PLANE,
             plane,
         }
     },
-    setHoveredCell(cell) {
+    setHoveredCell(cell: Coords) {
         return {
             type: GRID.SET_HOVERED_PLANE,
             cell,
         }
     },
-    setSelectedPlane(plane) {
+    setSelectedPlane(plane: number) {
         return {
             type: GRID.SET_SELECTED_PLANE,
             plane,

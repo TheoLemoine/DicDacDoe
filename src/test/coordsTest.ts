@@ -3,6 +3,7 @@ import {
     multiplyBy,
     indexToCoords,
     coordsToIndex,
+    equals,
 } from '../app/utils/coords'
 
 const coords1 = { x: -2, y: 8, z: 7 }
@@ -39,4 +40,20 @@ test('should converting 6 first coords to index shold give numbers from 0 to 5',
         const index = coordsToIndex(coords[i])
         expect(index).toBe(i)
     }
+})
+
+test('should equals return true if x, y and z of two coords are equals', () => {
+    const result = equals(
+        { x: 1.32, y: 53, z: 8.31 },
+        { x: 1.32, y: 53, z: 8.31 }
+    )
+    expect(result).toBe(true)
+})
+
+test('should equals return false if x, y and z of two coords are not equals', () => {
+    const result = equals(
+        { x: 92.3, y: 10, z: 9.13 },
+        { x: 72.32, y: 32.21, z: 10 }
+    )
+    expect(result).toBe(false)
 })
