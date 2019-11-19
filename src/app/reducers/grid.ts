@@ -22,19 +22,34 @@ export default (state: GridState, action: any) => {
             const { plane: hoveredPlane } = action
             return hoveredPlane == state.hoveredPlane
                 ? state
-                : { ...state, hoveredPlane: hoveredPlane }
+                : { ...state, hoveredPlane }
 
         case GRID.SET_SELECTED_PLANE:
             const { plane: selectedPlane } = action
             return selectedPlane == state.selectedPlane
                 ? state
-                : { ...state, selectedPlane: selectedPlane }
+                : { ...state, selectedPlane }
 
         case GRID.SET_HOVERED_CELL:
             const { cell: hoveredCell } = action
-            return Coords.equals(hoveredCell, state.hoveredCell)
-                ? state
-                : { ...state, hoveredCell: hoveredCell }
+            if (hoveredCell === state.hoveredCell) {
+                return state
+            }
+            if (hoveredCell === null || state.hoveredCell === null) {
+                return { ...state, hoveredCell }
+            }
+            if (Coords.equals(hoveredCell, state.hoveredCell)) {
+                return state
+            }
+            return { ...state, hoveredCell }
+
+        case GRID.RESET_SELECTION:
+            return {
+                ...state,
+                hoveredCell: null,
+                hoveredPlane: null,
+                selectedPlane: null,
+            }
 
         default:
             return state

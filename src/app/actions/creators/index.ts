@@ -22,7 +22,7 @@ export const grid = {
     },
     setHoveredCell(cell: Coords) {
         return {
-            type: GRID.SET_HOVERED_PLANE,
+            type: GRID.SET_HOVERED_CELL,
             cell,
         }
     },
@@ -30,6 +30,11 @@ export const grid = {
         return {
             type: GRID.SET_SELECTED_PLANE,
             plane,
+        }
+    },
+    resetSelection() {
+        return {
+            type: GRID.RESET_SELECTION,
         }
     },
 }

@@ -19,9 +19,7 @@ function CanvasBridge({ children }) {
                         <Canvas
                             style={{ height: '100vh' }}
                             onPointerMissed={() => {
-                                gridDispatch(gridActions.setSelectedPlane(null))
-                                gridDispatch(gridActions.setHoveredPlane(null))
-                                gridDispatch(gridActions.setHoveredCell(null))
+                                gridDispatch(gridActions.resetSelection())
                             }}
                         >
                             <GameContext.Provider value={gameValue}>

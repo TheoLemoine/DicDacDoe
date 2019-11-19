@@ -11,21 +11,35 @@ import { useGame } from '../providers/gameProvider'
 import CellEdges from './CellEdges'
 import CellSelection from './CellSelection'
 
+import * as Coords from '../../utils/coords'
+
 function Cell({ position, player }) {
     const [game, gameDispatch] = useGame()
     const [gridState, gridDispatch] = useGrid()
     const { selectedPlane, hoveredPlane, hoveredCell } = gridState
 
+    const [x, y, z] = position
+    const positionObj = { x, y, z }
+
+    const isEmpty = player === null
+    const isSelectingCell = selectedPlane !== null
+    const isSelectingPlane = selectedPlane === null
+    const isInSelectedPlane = isSelectingCell && position[1] === selectedPlane
+    const isInHoveredPlane =
+        hoveredPlane !== null && position[1] === hoveredPlane
+    const isCellHovered =
+        hoveredCell !== null && Coords.equals(hoveredCell, positionObj)
+
     const onHoverMove = useCallback(
         e => {
-            if (selectedPlane === null || position[1] === selectedPlane)
-                e.stopPropagation()
+            if (isSelectingPlane || isInSelectedPlane) e.stopPropagation()
 
-            if (selectedPlane === null) {
+            if (isSelectingPlane) {
                 gridDispatch(gridActions.setHoveredPlane(position[1]))
-            } else {
-                const [x, y, z] = position
-                gridDispatch(gridActions.setHoveredCell({ x, y, z }))
+            }
+
+            if (isSelectingCell) {
+                gridDispatch(gridActions.setHoveredCell(positionObj))
             }
         },
         [gridState, position]
@@ -33,17 +47,16 @@ function Cell({ position, player }) {
 
     const onClick = useCallback(
         e => {
-            if (selectedPlane === null || position[1] === selectedPlane)
-                e.stopPropagation()
+            if (isSelectingPlane || isInSelectedPlane) e.stopPropagation()
 
-            if (selectedPlane === null) {
+            if (isSelectingPlane) {
                 gridDispatch(gridActions.setSelectedPlane(position[1]))
-            } else if (player == null) {
-                const [x, y, z] = focusArea.map(c => c + 1)
-                gridDispatch(
-                    gridActions.add(new Vector3(x, y, z), game.current_player)
-                )
-                gridDispatch(gridActions.setSelectedPlane(null))
+            }
+
+            if (isSelectingCell && isEmpty) {
+                const [x, y, z] = position.map(c => c + 1)
+                gridDispatch(gridActions.add({ x, y, z }, game.current_player))
+                gridDispatch(gridActions.resetSelection())
                 gameDispatch(
                     gameActions.setCurrentPlayer(
                         game.current_player == 1 ? 2 : 1
@@ -51,30 +64,31 @@ function Cell({ position, player }) {
                 )
             }
         },
-        [player, position]
+        [gridState, player, position]
     )
 
-    const getOpacity = useCallback(() => {
-        if (
-            player ||
-            hoveredPlane === null ||
-            position[1] === hoveredPlane ||
-            (selectedPlane !== null && position[1] === selectedPlane)
-        ) {
-            return 0.5
-        }
-        return 0
-    }, [player, hoveredPlane, position, selectedPlane])
+    const getEdgesOpacity = useCallback(() => {
+        if (isSelectingPlane) return 0.7
+        if (isSelectingCell && isInSelectedPlane) return 1
+        if (isSelectingCell && !isInSelectedPlane) return 0.1
+    }, [position, gridState])
+
+    const getSelectionOpacity = useCallback(() => {
+        if (isSelectingPlane && isInHoveredPlane) return 0.3
+        if (isSelectingPlane && !isInHoveredPlane) return 0
+        if (isSelectingCell && isCellHovered) return 0.3
+        if (isSelectingCell && !isCellHovered) return 0
+    }, [position, gridState])
 
     return (
         <>
             <CellSelection
                 position={position}
-                opacity={getOpacity()}
+                opacity={getSelectionOpacity()}
                 onPointerMove={onHoverMove}
                 onClick={onClick}
             />
-            <CellEdges position={position} opacity={0.5} />
+            <CellEdges position={position} opacity={getEdgesOpacity()} />
             {player == 1 && (
                 <mesh position={position}>
                     <torusGeometry
