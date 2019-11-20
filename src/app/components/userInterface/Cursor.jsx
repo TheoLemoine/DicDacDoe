@@ -9,7 +9,7 @@ const Cursor = ({ x, y }) => {
     const container = useContainer(cursorRoot)
 
     return createPortal(
-        <div className="cursor" style={{ left: x, top: y }}></div>,
+        <div className="cursor cursor-main" style={{ left: x, top: y }}></div>,
         container.current
     )
 }

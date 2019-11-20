@@ -1,35 +1,20 @@
 import React, { useState } from 'react'
-
 import '../styles/styles.sass'
 
 import { GameProvider } from './providers/gameProvider'
-import { GridProvider } from './providers/gridProvider'
 
-import CanvasApp from './CanvasApp'
-import UserInterface from './userInterface/index'
 import Cursor from './userInterface/cursor'
-import CursorSmooth from './userInterface/cursorSmooth'
+import CursorSmooth from './userInterface/CursorSmooth'
+import Content from './Content'
 
 function App() {
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-
-    const updateMousePos = e => {
-        setMousePos({
-            x: e.clientX,
-            y: e.clientY,
-        })
-    }
-
+    const [mousePos, setMousePos] = useState({ x: -10, y: -10 })
+    const [message, setMessage] = useState(null)
     return (
         <GameProvider>
-            <div onMouseMoveCapture={updateMousePos}>
-                <GridProvider>
-                    <CanvasApp />
-                    <UserInterface />
-                </GridProvider>
-            </div>
+            <Content onMouseMove={setMousePos} onMessageChange={setMessage} />
             <Cursor {...mousePos} />
-            <CursorSmooth {...mousePos} />
+            <CursorSmooth {...mousePos} message={message} />
         </GameProvider>
     )
 }

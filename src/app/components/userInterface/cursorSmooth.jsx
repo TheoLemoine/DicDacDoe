@@ -1,41 +1,90 @@
 import React, { useState, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import useContainer from '../../utils/hooks/useContainer'
-import useInterval from '../../utils/hooks/useInterval'
 import { useGame } from '../providers/gameProvider'
+import { useTransition, animated, useSpring } from 'react-spring'
 import './cursor.sass'
+import SvgCross from './SvgCross'
 
 const cursorRoot = document.getElementById('cursor-root')
 
-const Cursor = ({ x, y }) => {
-    const [{ helpMessage }] = useGame()
+const transformMessage = message => {
+    switch (message) {
+        case 'X':
+            return <SvgCross className={'cursor-cross'} />
+        default:
+            return message
+    }
+}
 
-    const [currentX, setCurrentX] = useState(innerWidth / 2)
-    const [currentY, setCurrentY] = useState(innerHeight / 2)
-    const targetX = useRef(0)
-    const targetY = useRef(0)
-    targetX.current = x
-    targetY.current = y
+const CursorSmooth = ({ x, y, message }) => {
+    const [{ current_player }] = useGame()
 
-    const smooth = (current, target, factor, offset) =>
-        current + (target + offset - current) * factor
+    const transformedMessage = transformMessage(message)
 
-    useInterval(() => {
-        setCurrentX(cx => smooth(cx, targetX.current, 0.3, -20))
-        setCurrentY(cy => smooth(cy, targetY.current, 0.3, +20))
-    }, 40)
+    const getCorrespondingProps = message => {
+        switch (message) {
+            case null:
+                return {
+                    transform: 'scale3d(0.1, 0.1, 0.1)',
+                    backgroundColor: 'rgba(255, 255, 255, 1)',
+                    left: x - 27,
+                    top: y - 27,
+                    borderColor: 'rgb(255, 255, 255)',
+                }
+
+            case 'Play':
+                return {
+                    transform: 'scale3d(1, 1, 1)',
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    left: x - 27,
+                    top: y + 27,
+                    borderColor: current_player === 1 ? 'rgb(17, 102, 255)' : 'rgb(204, 60, 0)',
+                }
+
+            case 'X':
+                return {
+                    transform: 'scale3d(0.5, 0.5, 0.5)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                    left: x - 27,
+                    top: y + 10,
+                    borderColor: 'rgb(255, 255, 255)',
+                }
+
+            default:
+                return {
+                    transform: 'scale3d(1, 1, 1)',
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
+                    left: x - 27,
+                    top: y + 27,
+                    borderColor: current_player === 1 ? 'rgb(17, 102, 255)' : 'rgb(204, 60, 0)',
+                }
+        }
+    }
+
+    const transitions = useTransition(transformedMessage, null, {
+        from: { opacity: 0 },
+        enter: { opacity: 1 },
+        leave: { opacity: 0 },
+    })
+
+    const props = useSpring({ ...getCorrespondingProps(message, current_player) })
 
     const container = useContainer(cursorRoot)
 
     return createPortal(
-        <div
-            className={`cursor ${helpMessage !== null && 'cursor-message'}`}
-            style={{ right: innerWidth - currentX, top: currentY }}
-        >
-            {helpMessage}
-        </div>,
+        <animated.div className="cursor cursor-message" style={props}>
+            {transitions.map(
+                ({ item, key, props }) =>
+                    item && (
+                        <animated.span className="cursor-message-text" key={key} style={props}>
+                            {item}
+                        </animated.span>
+                    )
+            )}
+        </animated.div>,
         container.current
     )
 }
 
-export default Cursor
+export default CursorSmooth

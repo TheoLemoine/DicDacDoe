@@ -22,19 +22,20 @@
 
         width: 10px
         height: 10px
-        border-radius: 5px
+        border-radius: 50%
 
-        background-color: white
+        &-main
+            background-color: white
 
         &-message
-            color: black
+            color: white
+            border: 2px solid white
+            width: 4rem
+            height: 4rem
             
-            left: auto
-            right: 0
-
-            width: auto
-            max-width: 400px
-            height: auto
-            
-            border-radius: 2px
-            padding: 0.3rem 0.5rem
+            &-text
+                font-size: 1rem
+                position: absolute
+                transform: translate3d(-50%, -50%, 0)
+                left: 50%
+                top: 50%

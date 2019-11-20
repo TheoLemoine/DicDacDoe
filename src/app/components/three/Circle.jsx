@@ -7,7 +7,7 @@ function Circle({ position, opacity, scale }) {
             <torusGeometry attach="geometry" args={[0.4, 0.02, 5, 20]} />
             <meshBasicMaterial
                 attach="material"
-                color={0x0000ff}
+                color={0x1166ff}
                 transparent={true}
                 opacity={opacity}
             />

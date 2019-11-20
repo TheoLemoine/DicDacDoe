@@ -2,7 +2,7 @@ import React from 'react'
 
 import './index.sass'
 import { useGame } from '../providers/gameProvider'
-import WinnerPopup from './winnerPopup'
+import WinnerPopup from './WinnerPopup'
 import MakeIAPlay from './MakeIAPlay'
 
 const UserInterface = () => {

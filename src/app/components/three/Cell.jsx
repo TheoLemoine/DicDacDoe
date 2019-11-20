@@ -34,11 +34,19 @@ function Cell({ position, player }) {
             if (isSelectingPlane || isInSelectedPlane) e.stopPropagation()
 
             if (isSelectingPlane) {
+                gameDispatch(gameActions.setHelpMessage('Select'))
                 gridDispatch(gridActions.setHoveredPlane(position[1]))
             }
 
-            if (isSelectingCell && isInSelectedPlane) {
-                gridDispatch(gridActions.setHoveredCell(positionObj))
+            if (isSelectingCell) {
+                if (isInSelectedPlane) {
+                    if (isEmpty) {
+                        gameDispatch(gameActions.setHelpMessage('Play'))
+                    } else {
+                        gameDispatch(gameActions.setHelpMessage('X'))
+                    }
+                    gridDispatch(gridActions.setHoveredCell(positionObj))
+                }
             }
         },
         [gridState, position]
@@ -58,8 +66,8 @@ function Cell({ position, player }) {
                 const move = { x, y, z }
                 const newGrid = set(gridState.grid, move, current_player)
                 gridDispatch(gridActions.set(newGrid))
-                gameDispatch(gameActions.updateWinner(newGrid, move, current_player))
                 gridDispatch(gridActions.resetSelection())
+                gameDispatch(gameActions.updateWinner(newGrid, move, current_player))
                 gameDispatch(gameActions.setCurrentPlayer(nextPlayer(current_player, players)))
             }
         },
@@ -83,7 +91,7 @@ function Cell({ position, player }) {
     const getContentOpacity = useCallback(() => {
         if (isSelectingCell && isInSelectedPlane && !isEmpty) return 1
         if (isSelectingCell && !isInSelectedPlane && !isEmpty) return 0.5
-        if (isSelectingCell && isEmpty) return 0.8
+        if (isSelectingCell && isEmpty) return 0.5
         if (isSelectingPlane && isInHoveredPlane) return 1
         if (isSelectingPlane && !isInHoveredPlane) return 0.8
     }, [position, gridState])

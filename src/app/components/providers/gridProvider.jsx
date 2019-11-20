@@ -12,11 +12,7 @@ export const GridProvider = ({ children }) => {
         hoveredCell: null,
     })
 
-    return (
-        <GridContext.Provider value={[state, dispatch]}>
-            {children}
-        </GridContext.Provider>
-    )
+    return <GridContext.Provider value={[state, dispatch]}>{children}</GridContext.Provider>
 }
 
 export const useGrid = () => useContext(GridContext)
