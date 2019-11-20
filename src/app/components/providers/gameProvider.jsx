@@ -8,13 +8,10 @@ export const GameProvider = ({ children }) => {
         winner: null,
         current_player: 1,
         players: [],
+        helpMessage: 'hello',
     })
 
-    return (
-        <GameContext.Provider value={[state, dispatch]}>
-            {children}
-        </GameContext.Provider>
-    )
+    return <GameContext.Provider value={[state, dispatch]}>{children}</GameContext.Provider>
 }
 
 export const useGame = () => useContext(GameContext)

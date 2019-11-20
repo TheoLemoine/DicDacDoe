@@ -1,4 +1,4 @@
-import { GRID, PLAYERS, CURRENT_PLAYER, WINNER } from '../types'
+import { GRID, PLAYERS, CURRENT_PLAYER, WINNER, HELP_MESSAGE } from '../types'
 import { Coords } from '../../utils/coords'
 
 export const grid = {
@@ -56,6 +56,12 @@ export const game = {
         return {
             type: WINNER.SET,
             player,
+        }
+    },
+    setHelpMessage(message: string) {
+        return {
+            type: HELP_MESSAGE.SET,
+            message,
         }
     },
 }

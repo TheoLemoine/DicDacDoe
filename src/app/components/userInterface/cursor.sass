@@ -1,0 +1,40 @@
+
+#cursor-root
+
+    position: absolute
+    top: 0
+    left: 0
+
+    width: 100vw
+    height: 100vh
+    overflow: hidden
+    pointer-events: none
+    
+    .cursor
+        display: block
+
+        pointer-events: none
+
+        z-index: 5
+        position: absolute
+        top: 0
+        left: 0
+
+        width: 10px
+        height: 10px
+        border-radius: 5px
+
+        background-color: white
+
+        &-message
+            color: black
+            
+            left: auto
+            right: 0
+
+            width: auto
+            max-width: 400px
+            height: auto
+            
+            border-radius: 2px
+            padding: 0.3rem 0.5rem

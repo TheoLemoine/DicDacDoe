@@ -1,17 +1,16 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
+import useContainer from '../../utils/hooks/useContainer'
+import './cursor.sass'
 
-const Cursor = props => {
-    const { x, y } = props
+const cursorRoot = document.getElementById('cursor-root')
 
-    const positionStyles = {
-        left: x,
-        top: y,
-    }
+const Cursor = ({ x, y }) => {
+    const container = useContainer(cursorRoot)
 
     return createPortal(
-        <div className="hud-cursor" style={positionStyles}></div>,
-        document.getElementById('root')
+        <div className="cursor" style={{ left: x, top: y }}></div>,
+        container.current
     )
 }
 

@@ -19,11 +19,16 @@ export const CURRENT_PLAYER = {
     SET: 'app/current_player/SET',
 }
 
+export const HELP_MESSAGE = {
+    SET: 'app/help_message/SET',
+}
+
 export default {
     GRID,
     GAME: {
         PLAYERS,
         CURRENT_PLAYER,
         WINNER,
+        HELP_MESSAGE,
     },
 }
