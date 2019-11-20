@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { Coords } from './coords'
 
 export type Array3D = Array<Array2D>
@@ -68,15 +67,21 @@ export function filter(array3D: Array3D, callback: Array3DFilterCallback): Array
     return newArray3D
 }
 
-export function flatten(array3D: Array3D): Array1D {
-    const flatArray: Array1D = []
-
+export function* all(array3D: Array3D) {
     for (let x = 0; x < array3D.length; x++) {
         for (let y = 0; y < array3D[x].length; y++) {
             for (let z = 0; z < array3D[x][y].length; z++) {
-                flatArray.push(array3D[x][y][z])
+                yield [array3D[x][y][z], { x, y, z }]
             }
         }
+    }
+}
+
+export function flatten(array3D: Array3D): Array1D {
+    const flatArray: Array1D = []
+
+    for (const [elem] of all(array3D)) {
+        flatArray.push(elem)
     }
 
     return flatArray

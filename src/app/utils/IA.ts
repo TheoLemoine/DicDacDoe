@@ -1,4 +1,4 @@
-import { Array3D, set } from './array3D'
+import { Array3D, set, all } from './array3D'
 import { Coords } from './coords'
 import { getAvailableMoves, checkWin, nextPlayer } from './gameUtils'
 
@@ -37,6 +37,13 @@ export function computeMove(
 }
 
 export function evalState(gameState: Array3D, player: number): [boolean, number] {
-    // TODO: eval state function: give a grade to the state for the player who last played
-    return [false, 5]
+    for (const [elem, coords] of all(gameState)) {
+        if (checkWin(gameState, coords)) {
+            return [true, 10]
+        }
+    }
+
+    // for now, non winning states just return false and give no points
+    // TODO : analyse state and give a score according to possible combos
+    return [false, 0]
 }

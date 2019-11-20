@@ -1,5 +1,5 @@
 import { GRID } from '../actions/types/index'
-import { Array3D, set, makeEmpty } from '../utils/array3D'
+import { Array3D, makeEmpty } from '../utils/array3D'
 import * as Coords from '../utils/coords'
 
 export type GridState = {

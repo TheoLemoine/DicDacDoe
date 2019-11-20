@@ -1,18 +1,21 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
 import './index.sass'
 import { useGame } from '../providers/gameProvider'
 import WinnerPopup from './winnerPopup'
+import MakeIAPlay from './MakeIAPlay'
 
 const UserInterface = () => {
-    const [game, dispatch] = useGame()
-    const { current_player, players, winner } = game
+    const [{ current_player, winner }] = useGame()
 
     return (
         <div className="hud-container">
-            <h1 className="hud-current-player">
-                Au joueur {String(current_player)}
-            </h1>
+            <h1 className="hud-current-player">Au joueur {String(current_player)}</h1>
+            {winner === null && (
+                <div className="hud-ia-play">
+                    <MakeIAPlay />
+                </div>
+            )}
             {winner !== null && <WinnerPopup winner={winner} />}
         </div>
     )

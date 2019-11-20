@@ -25,13 +25,13 @@ function* get3DArroundVectors(): Iterable<Coords> {
     }
 }
 
-export function checkWin(array3D: Array3D, lastMove: Coords): boolean {
-    const val = get(array3D, lastMove)
+export function checkWin(array3D: Array3D, from: Coords): boolean {
+    const val = get(array3D, from)
 
     for (const vect of get3DArroundVectors()) {
         let combo = 1
-        combo += getLineCombo(array3D, val, lastMove, vect, 0)
-        combo += getLineCombo(array3D, val, lastMove, multiplyBy(vect, -1), 0)
+        combo += getLineCombo(array3D, val, from, vect, 0)
+        combo += getLineCombo(array3D, val, from, multiplyBy(vect, -1), 0)
 
         if (combo >= NEEDED_COMBO) return true
     }

@@ -1,4 +1,4 @@
-import { computeMove, evalState } from '../app/utils/IA'
+import { computeMove } from '../app/utils/IA'
 
 const gameState = [
     [

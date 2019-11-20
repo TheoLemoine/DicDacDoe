@@ -1,12 +1,11 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
 import { useGame } from '../providers/gameProvider'
 import { useGrid } from '../providers/gridProvider'
 
-import {
-    grid as gridActions,
-    game as gameActions,
-} from '../../actions/creators/index'
+import { grid as gridActions, game as gameActions } from '../../actions/creators/index'
+
+import Button from '../Button'
 
 const WinnerPopup = () => {
     const [grid, dispatchToGrid] = useGrid()
@@ -22,7 +21,7 @@ const WinnerPopup = () => {
     return (
         <div className="winner-popup">
             <h1>player {String(winner)} won</h1>
-            <button onClick={resetGame}>Play again</button>
+            <Button onClick={resetGame} label="Play again" />
         </div>
     )
 }
