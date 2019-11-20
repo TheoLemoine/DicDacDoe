@@ -1,10 +1,10 @@
 import React from 'react'
-import { func, string } from 'prop-types'
+import { func, string, bool } from 'prop-types'
 
 import './Button.sass'
 
-const Button = ({ onClick = () => {}, label = '' }) => (
-    <button onClick={onClick} className="app-button">
+const Button = ({ onClick = () => {}, label = '', active = true }) => (
+    <button onClick={active ? onClick : null} className={`app-button ${active || 'disabled'}`}>
         {label}
     </button>
 )
@@ -12,6 +12,7 @@ const Button = ({ onClick = () => {}, label = '' }) => (
 Button.propTypes = {
     onCLick: func,
     label: string,
+    disabled: bool,
 }
 
 export default Button

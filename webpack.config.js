@@ -38,6 +38,11 @@ module.exports = {
                 test: /\.s[ac]ss$/i,
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
+            {
+                test: /\.worker\.js$/,
+                loader: 'worker-loader',
+                options: { inline: true },
+            },
         ],
     },
     resolve: {

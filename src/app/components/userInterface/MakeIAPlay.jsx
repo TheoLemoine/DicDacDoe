@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {} from 'prop-types'
 
 import Button from '../Button'
@@ -9,23 +9,44 @@ import { grid as gridActions, game as gameActions } from '../../actions/creators
 
 import { nextPlayer } from '../../utils/gameUtils'
 import { set } from '../../utils/array3D'
-import { computeMove } from '../../utils/IA'
+
+import IAWorker from '../../workers/IAWorker.worker'
 
 const MakeIAPlay = () => {
-    const [{ current_player, players, winner }, dispatchToGame] = useGame()
+    const [{ current_player, players }, dispatchToGame] = useGame()
     const [{ grid }, dispatchToGrid] = useGrid()
 
-    const playAsIA = useCallback(() => {
-        const move = computeMove(grid, current_player, players, 20)
-        const newGrid = set(grid, move, current_player)
+    const worker = useRef(null)
+    const [move, setMove] = useState(null)
 
-        dispatchToGrid(gridActions.set(newGrid))
-        dispatchToGame(gameActions.updateWinner(newGrid, move, current_player))
-        dispatchToGrid(gridActions.resetSelection())
-        dispatchToGame(gameActions.setCurrentPlayer(nextPlayer(current_player, players)))
+    useEffect(() => {
+        if (worker.current !== null) worker.current.terminate()
+
+        worker.current = new IAWorker()
+
+        setMove(null)
+        worker.current.onmessage = ({ data: move }) => setMove(move)
+
+        worker.current.postMessage({
+            gameState: grid,
+            player: current_player,
+            players,
+        })
     }, [grid, current_player, players])
 
-    return <Button onClick={playAsIA} label="Let the IA Play" />
+    const playAsIA = useCallback(
+        move => {
+            const newGrid = set(grid, move, current_player)
+
+            dispatchToGrid(gridActions.set(newGrid))
+            dispatchToGame(gameActions.updateWinner(newGrid, move, current_player))
+            dispatchToGrid(gridActions.resetSelection())
+            dispatchToGame(gameActions.setCurrentPlayer(nextPlayer(current_player, players)))
+        },
+        [grid, current_player, players]
+    )
+
+    return <Button onClick={() => playAsIA(move)} active={move !== null} label="Let the IA Play" />
 }
 
 export default MakeIAPlay
