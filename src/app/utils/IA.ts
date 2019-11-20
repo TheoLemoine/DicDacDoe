@@ -2,7 +2,12 @@ import { Array3D, set } from './array3D'
 import { Coords } from './coords'
 import { getAvailableMoves, checkWin, nextPlayer } from './gameUtils'
 
-function computeMove(gameState: Array3D, player: number, players: Array<number>): Coords {
+export function computeMove(
+    gameState: Array3D,
+    player: number,
+    players: Array<number>,
+    depth: number
+): Coords {
     const minmax = (
         gameState: Array3D,
         maxDepth: number,
@@ -27,11 +32,11 @@ function computeMove(gameState: Array3D, player: number, players: Array<number>)
         return [bestScore, bestMove]
     }
 
-    const [_, move] = minmax(gameState, 5, player)
+    const [_, move] = minmax(gameState, depth, player)
     return move
 }
 
-function evalState(gameState: Array3D, player: number): [boolean, number] {
+export function evalState(gameState: Array3D, player: number): [boolean, number] {
     // TODO: eval state function: give a grade to the state for the player who last played
     return [false, 5]
 }

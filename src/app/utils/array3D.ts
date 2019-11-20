@@ -4,18 +4,10 @@ import { Coords } from './coords'
 export type Array3D = Array<Array2D>
 export type Array2D = Array<Array1D>
 export type Array1D = Array<any>
-export type Array3DMapCallback = (
-    coords: Coords,
-    elem: any,
-    index: number
-) => any
+export type Array3DMapCallback = (coords: Coords, elem: any, index: number) => any
 export type Array3DFilterCallback = (coords: Coords, elem: any) => boolean
 
-export function makeEmpty(
-    deep: number,
-    lenght: number,
-    empty: any
-): Array<any> {
+export function makeEmpty(deep: number, lenght: number, empty: any): Array<any> {
     if (deep === 0) return empty
 
     return new Array(lenght).fill(makeEmpty(deep - 1, lenght, empty))
@@ -38,30 +30,56 @@ export function set(array: Array3D, at: Coords, value: any): Array3D {
 }
 
 export function map(array3D: Array3D, callback: Array3DMapCallback): Array3D {
-    return array3D.map<Array3D>((array2D: Array2D, x: number) =>
-        array2D.map<Array2D>((array1D: Array1D, y: number) =>
-            array1D.map<Array1D>((elem: any, z: number) =>
-                callback({ x, y, z }, elem, parseInt(`${y}${z}${x}`, 3))
-            )
-        )
-    )
+    const newArray3D: Array3D = []
+
+    for (let x = 0; x < array3D.length; x++) {
+        const newRow = []
+        for (let y = 0; y < array3D[x].length; y++) {
+            const newCol = []
+            for (let z = 0; z < array3D[x][y].length; z++) {
+                const elem = array3D[x][y][z]
+                const newElem = callback({ x, y, z }, elem, parseInt(`${y}${z}${x}`, 3))
+                newCol.push(newElem)
+            }
+            newRow.push(newCol)
+        }
+        newArray3D.push(newRow)
+    }
+
+    return newArray3D
 }
 
-export function filter(
-    array3D: Array3D,
-    callback: Array3DFilterCallback
-): Array3D {
-    return array3D.map<Array3D>((array2D: Array2D, x: number) =>
-        array2D.map((array1D: Array1D, y: number) =>
-            array1D.filter((elem: any, z: number) =>
-                callback({ x, y, z }, elem)
-            )
-        )
-    )
+export function filter(array3D: Array3D, callback: Array3DFilterCallback): Array3D {
+    const newArray3D: Array3D = []
+
+    for (let x = 0; x < array3D.length; x++) {
+        const newRow = []
+        for (let y = 0; y < array3D[x].length; y++) {
+            const newCol = []
+            for (let z = 0; z < array3D[x][y].length; z++) {
+                const elem = array3D[x][y][z]
+                if (callback({ x, y, z }, elem)) newCol.push(elem)
+            }
+            newRow.push(newCol)
+        }
+        newArray3D.push(newRow)
+    }
+
+    return newArray3D
 }
 
-export function flatten(array3D: Array3D) {
-    return _.flattenDeep(array3D)
+export function flatten(array3D: Array3D): Array1D {
+    const flatArray: Array1D = []
+
+    for (let x = 0; x < array3D.length; x++) {
+        for (let y = 0; y < array3D[x].length; y++) {
+            for (let z = 0; z < array3D[x][y].length; z++) {
+                flatArray.push(array3D[x][y][z])
+            }
+        }
+    }
+
+    return flatArray
 }
 
 export function coordsIn(array3D: Array3D, coords: Coords) {
