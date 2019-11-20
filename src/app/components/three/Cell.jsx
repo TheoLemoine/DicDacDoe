@@ -62,8 +62,9 @@ function Cell({ position, player }) {
 
     const getEdgesOpacity = useCallback(() => {
         if (isSelectingPlane) return 0.1
-        if (isSelectingCell && isInSelectedPlane) return 1
-        if (isSelectingCell && !isInSelectedPlane) return 0.05
+        // if (isSelectingCell && isInSelectedPlane) return 1
+        // if (isSelectingCell && !isInSelectedPlane) return 0.05
+        if (isSelectingCell) return 0.05
     }, [position, gridState])
 
     // const getSelectionOpacity = useCallback(() => {
@@ -74,21 +75,24 @@ function Cell({ position, player }) {
     // }, [position, gridState])
 
     const getContentOpacity = useCallback(() => {
-        if (isSelectingCell && !isEmpty) return 1
-        if (isSelectingCell && isCellHovered && isEmpty) return 0.8
+        if (isSelectingCell && isInSelectedPlane && !isEmpty) return 1
+        if (isSelectingCell && !isInSelectedPlane && !isEmpty) return 0.5
+        if (isSelectingCell && isEmpty) return 0.8
         if (isSelectingPlane && isInHoveredPlane) return 1
         if (isSelectingPlane && !isInHoveredPlane) return 0.8
     }, [position, gridState])
 
-    const ContentComponent = () => {
+    const getContentComponent = () => {
         if (player === 1 || (isCellHovered && game.current_player === 1)) {
-            return <Circle position={[0, 0, 0]} opacity={getContentOpacity()} />
+            return Circle
         }
         if (player === 2 || (isCellHovered && game.current_player === 2)) {
-            return <Cross position={[0, 0, 0]} opacity={getContentOpacity()} />
+            return Cross
         }
         return null
     }
+
+    const ContentComponent = getContentComponent()
 
     return (
         <object3D position={position}>
@@ -103,9 +107,7 @@ function Cell({ position, player }) {
                 opacity={getEdgesOpacity()}
                 size={[0.999, 0.999, 0.999]}
             />
-            <CellContent>
-                <ContentComponent />
-            </CellContent>
+            <CellContent ContentComponent={ContentComponent} opacity={getContentOpacity()} />
         </object3D>
     )
 }

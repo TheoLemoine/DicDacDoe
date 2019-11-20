@@ -1,8 +1,9 @@
 import React from 'react'
+import { a } from 'react-spring/three'
 
-function Circle({ position, opacity }) {
+function Circle({ position, opacity, scale }) {
     return (
-        <mesh position={position}>
+        <a.mesh position={position} scale={scale}>
             <torusGeometry attach="geometry" args={[0.4, 0.02, 5, 20]} />
             <meshBasicMaterial
                 attach="material"
@@ -10,7 +11,7 @@ function Circle({ position, opacity }) {
                 transparent={true}
                 opacity={opacity}
             />
-        </mesh>
+        </a.mesh>
     )
 }
 
