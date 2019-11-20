@@ -18,7 +18,6 @@ const gameState = [
     ],
 ]
 
-test('should compute move return what ?', () => {
-    const move = computeMove(gameState, 0, [0, 1], 1)
-    //expect(move).toEqual({ x: 0, y: 0, z: 0 })
+test('should computing move not generate a stack overflow...', () => {
+    const move = computeMove(gameState, 0, [0, 1], 3)
 })
