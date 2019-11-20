@@ -7,7 +7,7 @@ export const GameProvider = ({ children }) => {
     const [state, dispatch] = useReducer(game, {
         winner: null,
         current_player: 1,
-        players: [],
+        players: [1, 2],
         helpMessage: 'hello',
     })
 

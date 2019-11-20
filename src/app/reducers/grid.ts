@@ -11,24 +11,20 @@ export type GridState = {
 
 export default (state: GridState, action: any) => {
     switch (action.type) {
-        case GRID.ADD:
-            const { coords, value } = action
-            return { ...state, grid: set(state.grid, coords, value) }
+        case GRID.SET:
+            const { grid } = action
+            return { ...state, grid }
 
         case GRID.RESET:
             return { ...state, grid: makeEmpty(3, 3, null) }
 
         case GRID.SET_HOVERED_PLANE:
             const { plane: hoveredPlane } = action
-            return hoveredPlane == state.hoveredPlane
-                ? state
-                : { ...state, hoveredPlane }
+            return hoveredPlane == state.hoveredPlane ? state : { ...state, hoveredPlane }
 
         case GRID.SET_SELECTED_PLANE:
             const { plane: selectedPlane } = action
-            return selectedPlane == state.selectedPlane
-                ? state
-                : { ...state, selectedPlane }
+            return selectedPlane == state.selectedPlane ? state : { ...state, selectedPlane }
 
         case GRID.SET_HOVERED_CELL:
             const { cell: hoveredCell } = action

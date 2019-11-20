@@ -8,6 +8,8 @@ import BoxEdges from './BoxEdges'
 import CellSelection from './CellSelection'
 
 import * as Coords from '../../utils/coords'
+import { set } from '../../utils/array3D'
+import { nextPlayer } from '../../utils/gameUtils'
 import Circle from './Circle'
 import Cross from './Cross'
 import CellContent from './CellContent'
@@ -52,9 +54,13 @@ function Cell({ position, player }) {
 
             if (isSelectingCell && isInSelectedPlane && isEmpty) {
                 const [x, y, z] = position.map(c => c + 1)
-                gridDispatch(gridActions.add({ x, y, z }, game.current_player))
+                const { current_player, players } = game
+                const move = { x, y, z }
+                const newGrid = set(gridState.grid, move, current_player)
+                gridDispatch(gridActions.set(newGrid))
+                gameDispatch(gameActions.updateWinner(newGrid, move, current_player))
                 gridDispatch(gridActions.resetSelection())
-                gameDispatch(gameActions.setCurrentPlayer(game.current_player == 1 ? 2 : 1))
+                gameDispatch(gameActions.setCurrentPlayer(nextPlayer(current_player, players)))
             }
         },
         [gridState, player, position]

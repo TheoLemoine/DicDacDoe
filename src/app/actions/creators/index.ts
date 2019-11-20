@@ -1,12 +1,13 @@
 import { GRID, PLAYERS, CURRENT_PLAYER, WINNER, HELP_MESSAGE } from '../types'
+import { Array3D } from '../../utils/array3D'
 import { Coords } from '../../utils/coords'
+import { checkWin } from '../../utils/gameUtils'
 
 export const grid = {
-    add(coords: Coords, value: any) {
+    set(grid: Array3D) {
         return {
-            type: GRID.ADD,
-            coords,
-            value,
+            type: GRID.SET,
+            grid,
         }
     },
     reset() {
@@ -63,6 +64,9 @@ export const game = {
             type: HELP_MESSAGE.SET,
             message,
         }
+    },
+    updateWinner(gameState: Array3D, lastMove: Coords, current_player: any) {
+        return this.setWinner(checkWin(gameState, lastMove) ? current_player : null)
     },
 }
 
