@@ -8,7 +8,7 @@ export function computeMove(
     players: Array<number>,
     depth: number
 ): Coords {
-    const minmax = (
+    const minimax = (
         current_state: Array3D,
         current_depth: number,
         current_player: number,
@@ -33,7 +33,7 @@ export function computeMove(
             for (const move of getAvailableMoves(current_state)) {
                 const next_state = set(current_state, move, current_player)
 
-                const [moveScore, _] = minmax(
+                const [moveScore, _] = minimax(
                     next_state,
                     current_depth - 1,
                     nextPlayer(current_player, players),
@@ -59,7 +59,7 @@ export function computeMove(
             for (const move of getAvailableMoves(current_state)) {
                 const next_state = set(current_state, move, current_player)
 
-                const [moveScore, _] = minmax(
+                const [moveScore, _] = minimax(
                     next_state,
                     current_depth - 1,
                     nextPlayer(current_player, players),
@@ -82,7 +82,7 @@ export function computeMove(
         return [bestScore, bestMove]
     }
 
-    const [_, move] = minmax(gameState, depth, player, -Infinity, +Infinity)
+    const [_, move] = minimax(gameState, depth, player, -Infinity, +Infinity)
     return move
 }
 
