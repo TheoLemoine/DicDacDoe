@@ -39,7 +39,7 @@ export function checkWin(array3D: Array3D, from: Coords): boolean {
     return false
 }
 
-function getLineCombo(
+export function getLineCombo(
     array3D: Array3D,
     val: any,
     from: Coords,
