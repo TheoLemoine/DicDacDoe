@@ -1,12 +1,15 @@
 import React from 'react'
 
-function PlayerList() {
-    const [{ current_player, players }] = useGame()
+function PlayerList({ currentPlayer, players }) {
     return (
         <div className="player-list">
-            {players.map(player => (
-                <span>Joueur {player}</span>
+            {players.map((player, index) => (
+                <h1 key={index}>
+                    Joueur {player} {player === currentPlayer && 'joue'}
+                </h1>
             ))}
         </div>
     )
 }
+
+export default PlayerList

@@ -42,10 +42,12 @@ function Cell({ position, player }) {
                 if (isInSelectedPlane) {
                     if (isEmpty) {
                         gameDispatch(gameActions.setHelpMessage('Play'))
+                        gridDispatch(gridActions.setHoveredCell(positionObj))
                     } else {
-                        gameDispatch(gameActions.setHelpMessage('X'))
+                        gameDispatch(gameActions.setHelpMessage('Disabled'))
                     }
-                    gridDispatch(gridActions.setHoveredCell(positionObj))
+                } else {
+                    gameDispatch(gameActions.setHelpMessage('Void'))
                 }
             }
         },

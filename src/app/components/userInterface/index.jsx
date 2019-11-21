@@ -4,13 +4,14 @@ import './index.sass'
 import { useGame } from '../providers/gameProvider'
 import WinnerPopup from './WinnerPopup'
 import MakeIAPlay from './MakeIAPlay'
+import PlayerList from './PlayerList'
 
 const UserInterface = () => {
-    const [{ current_player, winner }] = useGame()
+    const [{ players, current_player, winner }] = useGame()
 
     return (
         <div className="hud-container">
-            <h1 className="hud-current-player">Au joueur {String(current_player)}</h1>
+            <PlayerList currentPlayer={current_player} players={players} />
             {winner === null && (
                 <div className="hud-ia-play">
                     <MakeIAPlay />

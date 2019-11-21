@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import { createPortal } from 'react-dom'
 import useContainer from '../../utils/hooks/useContainer'
 import { useGame } from '../providers/gameProvider'
@@ -10,8 +10,10 @@ const cursorRoot = document.getElementById('cursor-root')
 
 const transformMessage = message => {
     switch (message) {
-        case 'X':
-            return <SvgCross className={'cursor-cross'} />
+        case 'Disabled':
+            return null
+        case 'Cancel':
+            return <SvgCross className="cursor-cross" />
         default:
             return message
     }
@@ -42,12 +44,21 @@ const CursorSmooth = ({ x, y, message }) => {
                     borderColor: current_player === 1 ? 'rgb(17, 102, 255)' : 'rgb(204, 60, 0)',
                 }
 
-            case 'X':
+            case 'Disabled':
+                return {
+                    transform: 'scale3d(0.3, 0.3, 0.3)',
+                    backgroundColor: 'rgba(127, 127, 127, 1)',
+                    left: x - 27,
+                    top: y - 27,
+                    borderColor: 'rgb(255, 255, 255)',
+                }
+
+            case 'Cancel':
                 return {
                     transform: 'scale3d(0.5, 0.5, 0.5)',
-                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
                     left: x - 27,
-                    top: y + 10,
+                    top: y + 8,
                     borderColor: 'rgb(255, 255, 255)',
                 }
 
