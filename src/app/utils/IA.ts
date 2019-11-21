@@ -16,9 +16,12 @@ export function computeMove(
         beta: number
     ): [number, Coords] => {
         const { min, max } = Math
-        // if is terminal state, return the state score (move is handled on upper call)
-        const [isTerminal, score] = evalState(current_state, player)
-        if (isTerminal || current_depth <= 0) return [(score * max(current_depth, 1)) / depth, null]
+
+        const [game_over, score] = evalState(current_state, player)
+        if (game_over || current_depth <= 0) {
+            const depthFactor = (current_depth + depth) / (depth + depth)
+            return [score * depthFactor, null]
+        }
 
         let bestScore: number, bestMove: Coords
 
@@ -85,14 +88,11 @@ export function computeMove(
 
 function evalState(gameState: Array3D, player: number): [boolean, number] {
     for (const [elem, coords] of all(gameState)) {
-        if (elem !== 0 && checkWin(gameState, coords)) {
-            // player won
+        if (elem && checkWin(gameState, coords)) {
             if (elem === player) return [true, 10]
-            // player lost
-            else [true, -10]
+            else return [true, -10]
         }
     }
 
-    // game not ended
     return [false, 0]
 }
