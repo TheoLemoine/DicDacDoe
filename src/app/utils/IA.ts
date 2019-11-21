@@ -1,6 +1,6 @@
 import { Array3D, set, all } from './array3D'
 import { Coords } from './coords'
-import { getAvailableMoves, checkWin, nextPlayer } from './gameUtils'
+import { getAvailableMoves, nextPlayer, checkWin } from './gameUtils'
 
 export function computeMove(
     gameState: Array3D,
@@ -17,8 +17,8 @@ export function computeMove(
     ): [number, Coords] => {
         const { min, max } = Math
         // if is terminal state, return the state score (move is handled on upper call)
-        const [won, score] = evalState(current_state, current_player)
-        if (won || current_depth <= 0) return [(score * max(current_depth, 1)) / depth, null]
+        const [isTerminal, score] = evalState(current_state, player)
+        if (isTerminal || current_depth <= 0) return [(score * max(current_depth, 1)) / depth, null]
 
         let bestScore: number, bestMove: Coords
 
@@ -29,6 +29,7 @@ export function computeMove(
 
             for (const move of getAvailableMoves(current_state)) {
                 const next_state = set(current_state, move, current_player)
+
                 const [moveScore, _] = minmax(
                     next_state,
                     current_depth - 1,
@@ -54,6 +55,7 @@ export function computeMove(
 
             for (const move of getAvailableMoves(current_state)) {
                 const next_state = set(current_state, move, current_player)
+
                 const [moveScore, _] = minmax(
                     next_state,
                     current_depth - 1,
@@ -81,14 +83,16 @@ export function computeMove(
     return move
 }
 
-export function evalState(gameState: Array3D, player: number): [boolean, number] {
+function evalState(gameState: Array3D, player: number): [boolean, number] {
     for (const [elem, coords] of all(gameState)) {
-        if (elem === player && checkWin(gameState, coords)) {
-            return [true, 10]
+        if (elem !== 0 && checkWin(gameState, coords)) {
+            // player won
+            if (elem === player) return [true, 10]
+            // player lost
+            else [true, -10]
         }
     }
 
-    // for now, non winning states just return false and give no points
-    // TODO : analyse state and give a score according to possible combos
+    // game not ended
     return [false, 0]
 }

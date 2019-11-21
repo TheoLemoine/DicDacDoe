@@ -1,4 +1,4 @@
-import { Array3D, filter, flatten, map, coordsIn, get } from './array3D'
+import { Array3D, filter, flatten, map, coordsIn, get, all } from './array3D'
 import { Coords, add, multiplyBy, indexToCoords } from './coords'
 
 export const NEEDED_COMBO = 3
