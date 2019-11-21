@@ -1,6 +1,6 @@
-import { Array3D, set, all, filter, flatten } from './array3D'
+import { Array3D, set, all } from './array3D'
 import { Coords } from './coords'
-import { getAvailableMoves, checkWin, nextPlayer, getLineCombo } from './gameUtils'
+import { getAvailableMoves, checkWin, nextPlayer } from './gameUtils'
 
 export function computeMove(
     gameState: Array3D,
@@ -8,42 +8,76 @@ export function computeMove(
     players: Array<number>,
     depth: number
 ): Coords {
-    const alpha = -Infinity
-    const beta = Infinity
-
     const minmax = (
-        gameState: Array3D,
+        current_state: Array3D,
         current_depth: number,
-        current_player: number
+        current_player: number,
+        alpha: number,
+        beta: number
     ): [number, Coords] => {
-        const moves = getAvailableMoves(gameState)
+        const { min, max } = Math
+        // if is terminal state, return the state score (move is handled on upper call)
+        const [won, score] = evalState(current_state, current_player)
+        if (won || current_depth <= 0) return [(score * max(current_depth, 1)) / depth, null]
 
-        const scores = moves.map(move => {
-            const nextGameState = set(gameState, move, current_player)
+        let bestScore: number, bestMove: Coords
 
-            let [won, score] = evalState(nextGameState, current_player)
+        if (current_player === player) {
+            // maximizing player
+            bestScore = -Infinity
+            bestMove = null
 
-            if (won || current_depth >= depth) {
-                score *= Math.max(depth - current_depth, 1) / depth
-            } else {
-                score = minmax(
-                    nextGameState,
-                    current_depth + 1,
-                    nextPlayer(current_player, players)
-                )[0]
+            for (const move of getAvailableMoves(current_state)) {
+                const next_state = set(current_state, move, current_player)
+                const [moveScore, _] = minmax(
+                    next_state,
+                    current_depth - 1,
+                    nextPlayer(current_player, players),
+                    alpha,
+                    beta
+                )
+
+                // update max
+                if (moveScore > bestScore) {
+                    bestScore = moveScore
+                    bestMove = move
+                    alpha = max(alpha, moveScore)
+                }
+
+                // prunning
+                if (alpha >= beta) break
             }
+        } else {
+            // minimizing player
+            bestScore = +Infinity
+            bestMove = null
 
-            return score // reverse the score for next player
-        })
+            for (const move of getAvailableMoves(current_state)) {
+                const next_state = set(current_state, move, current_player)
+                const [moveScore, _] = minmax(
+                    next_state,
+                    current_depth - 1,
+                    nextPlayer(current_player, players),
+                    alpha,
+                    beta
+                )
 
-        const bestScore = current_player === player ? Math.max(...scores) : Math.min(...scores)
+                // update min
+                if (moveScore < bestScore) {
+                    bestScore = moveScore
+                    bestMove = move
+                    beta = min(beta, moveScore)
+                }
 
-        const bestMove = moves[scores.indexOf(bestScore)]
+                // prunning
+                if (alpha >= beta) break
+            }
+        }
 
         return [bestScore, bestMove]
     }
 
-    const [score, move] = minmax(gameState, 0, player)
+    const [_, move] = minmax(gameState, depth, player, -Infinity, +Infinity)
     return move
 }
 

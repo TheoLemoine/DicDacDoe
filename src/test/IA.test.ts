@@ -19,5 +19,5 @@ const gameState = [
 ]
 
 test('should computing move not generate a stack overflow...', () => {
-    const move = computeMove(gameState, 0, [0, 1], 3)
+    const move = computeMove(gameState, 0, [0, 1], 2)
 })
