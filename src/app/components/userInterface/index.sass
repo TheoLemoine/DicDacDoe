@@ -29,8 +29,12 @@
             top: 0
 
 .winner-popup
+    position: absolute
+    z-index: 1
     width: 100%
     height: 100%
+
+    background-color: rgba(0, 0, 0, 0.5)
 
     display: flex
     flex-direction: column
@@ -39,8 +43,8 @@
 
     pointer-events: auto
 
-    h1
-        font-weight: bold
+    &-title
+        font-weight: 400
         font-size: 3rem
 
 

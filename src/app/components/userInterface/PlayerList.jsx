@@ -9,7 +9,7 @@ function PlayerList({ currentPlayer, players }) {
             {players.map((player, index) => (
                 <PlayerLabel
                     key={index}
-                    label={`Joueur ${player}`}
+                    label={`Player ${player}`}
                     isCurrent={player === currentPlayer}
                     additionalClass={player === 1 ? 'player-one' : 'player-two'}
                 />
