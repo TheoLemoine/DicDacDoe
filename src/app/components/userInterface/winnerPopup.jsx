@@ -21,7 +21,7 @@ const WinnerPopup = () => {
     return (
         <div className="winner-popup">
             <h1>player {String(winner)} won</h1>
-            <Button onClick={resetGame} label="Play again" />
+            <Button onClick={resetGame}>Play again</Button>
         </div>
     )
 }
