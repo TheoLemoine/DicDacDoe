@@ -1,0 +1,37 @@
+.player-list
+    position: relative
+
+.player-label
+    font-weight: 400
+    font-size: 2.5rem
+    margin: 0
+    position: absolute
+    transform-origin: center left;
+    transform: scale3d(0.7, 0.7, 0.7) translate3d(0px, 140%, 0)
+    opacity: 0.7
+    transition: all ease 400ms
+
+    &::before
+        content: ''
+        position: absolute
+        bottom: -2px
+        left: 0
+        height: 2px
+        background-color: white
+        width: 0
+        transition: width cubic-bezier(.64,.01,.48,1) 800ms
+
+    &.player-one::before
+        background-color: #1166ff
+        box-shadow: 0 0 2px #1166ff, 0 0 5px #1166ff
+
+    &.player-two::before
+        background-color: #cc3c00
+        box-shadow: 0 0 2px #cc3c00, 0 0 5px #cc3c00
+
+    &.current-player
+        transform: scale3d(1, 1, 1) translate3d(10px, 0%, 0)
+        opacity: 1
+        
+        &::before
+            width: 80%

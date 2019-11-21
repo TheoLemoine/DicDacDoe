@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import {} from 'prop-types'
+import { useTransition, animated } from 'react-spring'
 
 import Button from '../Button'
 
@@ -46,7 +46,24 @@ const MakeIAPlay = () => {
         [grid, current_player, players]
     )
 
-    return <Button onClick={() => playAsIA(move)} active={move !== null} label="Let the IA Play" />
+    const transitions = useTransition(move !== null ? 'IA Move' : 'Loading', null, {
+        from: { opacity: 0, transform: 'translateY(-10px)' },
+        enter: { opacity: 1, transform: 'translateY(0px)' },
+        leave: { opacity: 0, transform: 'translateY(10px)' },
+    })
+
+    return (
+        <Button onClick={() => playAsIA(move)} active={move !== null}>
+            <span className="hud-ia-play-content">
+                <span className="hud-ia-play-stretcher">Loading</span>
+                {transitions.map(({ item, key, props }) => (
+                    <animated.span key={key} style={props} className="hud-ia-play-text">
+                        {item}
+                    </animated.span>
+                ))}
+            </span>
+        </Button>
+    )
 }
 
 export default MakeIAPlay

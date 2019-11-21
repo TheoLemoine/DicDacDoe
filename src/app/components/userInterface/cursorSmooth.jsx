@@ -33,6 +33,7 @@ const CursorSmooth = ({ x, y, message }) => {
                     left: x - 27,
                     top: y - 27,
                     borderColor: 'rgb(255, 255, 255)',
+                    filter: 'drop-shadow(0 0 2px white)',
                 }
 
             case 'Play':
@@ -42,6 +43,10 @@ const CursorSmooth = ({ x, y, message }) => {
                     left: x - 27,
                     top: y + 27,
                     borderColor: current_player === 1 ? 'rgb(17, 102, 255)' : 'rgb(204, 60, 0)',
+                    filter:
+                        current_player === 1
+                            ? 'drop-shadow(0 0 2px rgb(17, 102, 255))'
+                            : 'drop-shadow(0 0 2px rgb(204, 60, 0))',
                 }
 
             case 'Disabled':
@@ -51,6 +56,7 @@ const CursorSmooth = ({ x, y, message }) => {
                     left: x - 27,
                     top: y - 27,
                     borderColor: 'rgb(255, 255, 255)',
+                    filter: 'drop-shadow(0 0 2px white)',
                 }
 
             case 'Cancel':
@@ -60,6 +66,7 @@ const CursorSmooth = ({ x, y, message }) => {
                     left: x - 27,
                     top: y + 8,
                     borderColor: 'rgb(255, 255, 255)',
+                    filter: 'drop-shadow(0 0 2px white)',
                 }
 
             default:
@@ -69,6 +76,10 @@ const CursorSmooth = ({ x, y, message }) => {
                     left: x - 27,
                     top: y + 27,
                     borderColor: current_player === 1 ? 'rgb(17, 102, 255)' : 'rgb(204, 60, 0)',
+                    filter:
+                        current_player === 1
+                            ? 'drop-shadow(0 0 2px rgb(17, 102, 255))'
+                            : 'drop-shadow(0 0 2px rgb(204, 60, 0))',
                 }
         }
     }

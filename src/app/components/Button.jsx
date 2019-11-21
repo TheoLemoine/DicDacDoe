@@ -3,9 +3,9 @@ import { func, string, bool } from 'prop-types'
 
 import './Button.sass'
 
-const Button = ({ onClick = () => {}, label = '', active = true }) => (
+const Button = ({ onClick = () => {}, active = true, children }) => (
     <button onClick={active ? onClick : null} className={`app-button ${active || 'disabled'}`}>
-        {label}
+        {children}
     </button>
 )
 

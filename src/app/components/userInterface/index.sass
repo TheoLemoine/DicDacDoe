@@ -12,15 +12,21 @@
 
         color: white
 
-    &-current-player
-        position: absolute
-        font-weight: lighter
-
     &-ia-play
         position: absolute
         bottom: 0
-        right: 0
         pointer-events: auto
+
+        &-content
+            position: relative
+
+        &-stretcher
+            visibility: hidden
+
+        &-text
+            position: absolute
+            left: 0
+            top: 0
 
 .winner-popup
     width: 100%
