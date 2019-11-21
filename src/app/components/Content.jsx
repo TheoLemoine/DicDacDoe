@@ -4,16 +4,26 @@ import UserInterface from './userInterface/index'
 
 import { game } from '../actions/creators'
 import { useGame } from './providers/gameProvider'
-import { GridProvider } from './providers/gridProvider'
+import { useGrid } from './providers/gridProvider'
 
 function Content({ onMouseMove, onMessageChange }) {
     const [{ helpMessage }, gameDispatch] = useGame()
+    const [{ selectedPlane }] = useGrid()
 
     const updateMousePos = e => {
         if (helpMessage !== null) {
             gameDispatch(game.setHelpMessage(null))
         }
-        onMessageChange(helpMessage)
+
+        if (selectedPlane !== null && helpMessage === null) {
+            onMessageChange('Cancel')
+        } else {
+            if (helpMessage === 'Void') {
+                onMessageChange(null)
+            } else {
+                onMessageChange(helpMessage)
+            }
+        }
 
         onMouseMove({
             x: e.clientX,
@@ -22,10 +32,8 @@ function Content({ onMouseMove, onMessageChange }) {
     }
     return (
         <div onMouseMoveCapture={updateMousePos}>
-            <GridProvider>
-                <CanvasApp />
-                <UserInterface />
-            </GridProvider>
+            <CanvasApp />
+            <UserInterface />
         </div>
     )
 }
