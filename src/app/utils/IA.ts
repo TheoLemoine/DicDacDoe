@@ -8,7 +8,10 @@ export function computeMove(
     players: Array<number>,
     depth: number
 ): Coords {
-    const negamax = (
+    const alpha = -Infinity
+    const beta = Infinity
+
+    const minmax = (
         gameState: Array3D,
         current_depth: number,
         current_player: number
@@ -16,29 +19,31 @@ export function computeMove(
         const moves = getAvailableMoves(gameState)
 
         const scores = moves.map(move => {
-            const nextGameState = set(gameState, move, player)
+            const nextGameState = set(gameState, move, current_player)
 
-            let [won, score] = evalState(nextGameState, player)
+            let [won, score] = evalState(nextGameState, current_player)
 
             if (won || current_depth >= depth) {
-                score *= (depth - current_depth) / depth
+                score *= Math.max(depth - current_depth, 1) / depth
             } else {
-                score = negamax(
+                score = minmax(
                     nextGameState,
                     current_depth + 1,
                     nextPlayer(current_player, players)
                 )[0]
             }
 
-            return current_player === player ? score : -score
+            return score // reverse the score for next player
         })
 
-        const bestScore = Math.max(...scores)
+        const bestScore = current_player === player ? Math.max(...scores) : Math.min(...scores)
 
-        return [bestScore, moves[scores.indexOf(bestScore)]]
+        const bestMove = moves[scores.indexOf(bestScore)]
+
+        return [bestScore, bestMove]
     }
 
-    const [_, move] = negamax(gameState, 0, player)
+    const [score, move] = minmax(gameState, 0, player)
     return move
 }
 

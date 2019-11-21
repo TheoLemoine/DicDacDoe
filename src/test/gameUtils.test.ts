@@ -1,4 +1,4 @@
-import { getAvailableMoves, checkWin } from '../app/utils/gameUtils'
+import { getAvailableMoves, checkWin, nextPlayer } from '../app/utils/gameUtils'
 import 'babel-polyfill'
 
 const testGameState = [
@@ -96,4 +96,14 @@ test('should checkWin return true when diagonal line of 3', () => {
 test('should checkWin return true when checking form the midle of the line', () => {
     const result = checkWin(winningDiagonalGameState, { x: 1, y: 1, z: 1 })
     expect(result).toBe(true)
+})
+
+test('should nextplayer give the next player', () => {
+    const player = nextPlayer(1, [0, 1, 2])
+    expect(player).toBe(2)
+})
+
+test('should nextplayer wrap around if reach the end', () => {
+    const player = nextPlayer(2, [0, 1, 2])
+    expect(player).toBe(0)
 })
