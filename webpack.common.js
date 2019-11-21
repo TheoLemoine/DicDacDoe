@@ -2,18 +2,11 @@ const path = require('path')
 const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
-    mode: 'development',
     entry: path.resolve(__dirname, 'src/app/index.js'),
-    devtool: 'inline-source-map',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
         publicPath: '/',
-    },
-    devServer: {
-        contentBase: path.resolve(__dirname, 'dist'),
-        compress: true,
-        port: 9000,
     },
     plugins: [
         new CopyPlugin([

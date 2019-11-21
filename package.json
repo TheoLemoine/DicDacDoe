@@ -5,9 +5,9 @@
     "main": "src/app/index.js",
     "license": "MIT",
     "scripts": {
-        "start": "webpack-dev-server",
-        "build": "webpack",
-        "deploy": "webpack && surge ./dist dicdacdoe.surge.sh",
+        "start": "webpack-dev-server --config webpack.dev.js",
+        "build": "webpack --config webpack.prod.js",
+        "deploy": "jest && webpack --config webpack.prod.js && surge ./dist dicdacdoe.surge.sh",
         "test": "jest"
     },
     "devDependencies": {
@@ -23,11 +23,13 @@
         "prettier": "^1.19.1",
         "sass-loader": "^8.0.0",
         "style-loader": "^1.0.0",
+        "terser-webpack-plugin": "^2.2.1",
         "webpack": "^4.41.2",
         "webpack-cli": "^3.3.10",
         "webpack-copy-plugin": "^0.0.4",
         "webpack-dev-server": "^3.9.0",
-        "worker-loader": "^2.0.0"
+        "worker-loader": "^2.0.0",
+        "webpack-merge": "^4.2.2"
     },
     "dependencies": {
         "@babel/polyfill": "^7.7.0",
