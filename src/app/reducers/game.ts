@@ -1,10 +1,11 @@
-import { WINNER, PLAYERS, CURRENT_PLAYER, HELP_MESSAGE } from '../actions/types/index'
+import { WINNER, PLAYERS, CURRENT_PLAYER, HELP_MESSAGE, TURN } from '../actions/types/index'
 
 export type GameState<PlayerT> = {
     winner: PlayerT
     current_player: PlayerT
     players: Array<PlayerT>
     helpMessage: string
+    turn: number
 }
 
 export default (state: GameState<any>, action: any) => {
@@ -31,6 +32,18 @@ export default (state: GameState<any>, action: any) => {
             return {
                 ...state,
                 helpMessage: action.message,
+            }
+
+        case TURN.INCREMENT:
+            return {
+                ...state,
+                turn: state.turn + 1,
+            }
+
+        case TURN.RESET:
+            return {
+                ...state,
+                turn: 1,
             }
 
         default:

@@ -28,8 +28,20 @@
             left: 0
             top: 0
 
+    &-turn
+        position: absolute
+        font-size: 1.4rem
+        right: 0
+
+        &-stretcher
+            visibility: hidden
+
+        &-number
+            position: absolute
+
 .winner-popup
     position: absolute
+    pointer-events: none
     z-index: 1
     width: 100%
     height: 100%
@@ -41,10 +53,12 @@
     justify-content: center
     align-items: center
 
-    pointer-events: auto
 
     &-title
         font-weight: 400
         font-size: 3rem
+
+    .app-button
+        pointer-events: auto
 
 

@@ -23,6 +23,11 @@ export const HELP_MESSAGE = {
     SET: 'app/help_message/SET',
 }
 
+export const TURN = {
+    INCREMENT: 'app/turn/INCREMENT',
+    RESET: 'app/turn/RESET',
+}
+
 export default {
     GRID,
     GAME: {
@@ -30,5 +35,6 @@ export default {
         CURRENT_PLAYER,
         WINNER,
         HELP_MESSAGE,
+        TURN,
     },
 }

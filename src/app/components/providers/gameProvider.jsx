@@ -9,6 +9,7 @@ export const GameProvider = ({ children }) => {
         current_player: 1,
         players: [1, 2],
         helpMessage: null,
+        turn: 1,
     })
 
     return <GameContext.Provider value={[state, dispatch]}>{children}</GameContext.Provider>

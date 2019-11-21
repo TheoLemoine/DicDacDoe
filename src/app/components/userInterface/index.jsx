@@ -6,9 +6,10 @@ import WinnerPopup from './WinnerPopup'
 import MakeIAPlay from './MakeIAPlay'
 import PlayerList from './PlayerList'
 import { useTransition } from 'react-spring'
+import TurnCounter from './TurnCounter'
 
 const UserInterface = () => {
-    const [{ players, current_player, winner }] = useGame()
+    const [{ players, current_player, winner, turn }] = useGame()
 
     const transition = useTransition(winner, null, {
         from: { opacity: 0 },
@@ -22,6 +23,7 @@ const UserInterface = () => {
                 ({ item, key, props }) =>
                     item !== null && <WinnerPopup key={key} winner={item} style={props} />
             )}
+            <TurnCounter turn={turn} />
             <PlayerList currentPlayer={current_player} players={players} />
             <div className="hud-ia-play">
                 <MakeIAPlay />

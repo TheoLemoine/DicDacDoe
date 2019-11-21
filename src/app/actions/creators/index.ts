@@ -1,4 +1,4 @@
-import { GRID, PLAYERS, CURRENT_PLAYER, WINNER, HELP_MESSAGE } from '../types'
+import { GRID, PLAYERS, CURRENT_PLAYER, WINNER, HELP_MESSAGE, TURN } from '../types'
 import { Array3D } from '../../utils/array3D'
 import { Coords } from '../../utils/coords'
 import { checkWin } from '../../utils/gameUtils'
@@ -67,6 +67,16 @@ export const game = {
     },
     updateWinner(gameState: Array3D, lastMove: Coords, current_player: any) {
         return this.setWinner(checkWin(gameState, lastMove) ? current_player : null)
+    },
+    incrementTurn() {
+        return {
+            type: TURN.INCREMENT,
+        }
+    },
+    resetTurn() {
+        return {
+            type: TURN.RESET,
+        }
     },
 }
 

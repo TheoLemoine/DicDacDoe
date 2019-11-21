@@ -14,6 +14,7 @@ const WinnerPopup = ({ style, winner }) => {
 
     const resetGame = () => {
         dispatchToGrid(gridActions.reset())
+        dispatchToGame(gameActions.resetTurn())
         dispatchToGame(gameActions.setWinner(null))
     }
 

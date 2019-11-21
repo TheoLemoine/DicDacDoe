@@ -13,7 +13,7 @@ import { set } from '../../utils/array3D'
 import IAWorker from '../../workers/IAWorker.worker'
 
 const MakeIAPlay = () => {
-    const [{ current_player, players }, dispatchToGame] = useGame()
+    const [{ current_player, players, winner }, dispatchToGame] = useGame()
     const [{ grid }, dispatchToGrid] = useGrid()
 
     const worker = useRef(null)
@@ -42,6 +42,7 @@ const MakeIAPlay = () => {
             dispatchToGame(gameActions.updateWinner(newGrid, move, current_player))
             dispatchToGrid(gridActions.resetSelection())
             dispatchToGame(gameActions.setCurrentPlayer(nextPlayer(current_player, players)))
+            dispatchToGame(gameActions.incrementTurn())
         },
         [grid, current_player, players]
     )
@@ -53,7 +54,7 @@ const MakeIAPlay = () => {
     })
 
     return (
-        <Button onClick={() => playAsIA(move)} active={move !== null}>
+        <Button onClick={() => playAsIA(move)} active={move !== null && winner === null}>
             <span className="hud-ia-play-content">
                 <span className="hud-ia-play-stretcher">Loading</span>
                 {transitions.map(({ item, key, props }) => (

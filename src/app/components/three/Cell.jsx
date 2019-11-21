@@ -31,6 +31,7 @@ function Cell({ position, player }) {
 
     const onHoverMove = useCallback(
         e => {
+            if (game.winner !== null) return
             if (isSelectingPlane || isInSelectedPlane) e.stopPropagation()
 
             if (isSelectingPlane) {
@@ -56,6 +57,7 @@ function Cell({ position, player }) {
 
     const onClick = useCallback(
         e => {
+            if (game.winner !== null) return
             if (isSelectingPlane || isInSelectedPlane) e.stopPropagation()
 
             if (isSelectingPlane) {
@@ -71,6 +73,7 @@ function Cell({ position, player }) {
                 gridDispatch(gridActions.resetSelection())
                 gameDispatch(gameActions.updateWinner(newGrid, move, current_player))
                 gameDispatch(gameActions.setCurrentPlayer(nextPlayer(current_player, players)))
+                gameDispatch(gameActions.incrementTurn())
             }
         },
         [gridState, player, position]
