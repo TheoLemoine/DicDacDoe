@@ -8,23 +8,6 @@ extend({ OrbitControls })
 function Controls() {
     const controlsRef = useRef()
     const { camera, gl, scene } = useThree()
-    // const [cubeTexture, setCubeTexture] = useState(null)
-
-    // useEffect(() => {
-    //     var loader = new CubeTextureLoader()
-    //     loader.setPath('assets/')
-
-    //     setCubeTexture(
-    //         loader.load([
-    //             'bottom.png',
-    //             'other.png',
-    //             'other.png',
-    //             'other.png',
-    //             'other.png',
-    //             'other.png',
-    //         ])
-    //     )
-    // }, [])
 
     useEffect(() => {
         scene.background = new Color(0, 0, 0)

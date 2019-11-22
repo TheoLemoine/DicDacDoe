@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-import { extend, Canvas, useFrame, useThree } from 'react-three-fiber'
+import { extend, useFrame, useThree } from 'react-three-fiber'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
@@ -14,7 +14,6 @@ function Effects() {
 
     useEffect(() => {
         const pixelRatio = composer.current.renderer.getPixelRatio()
-        console.log(pixelRatio)
         const uniforms = fxaaPass.current.material.uniforms
         uniforms['resolution'].value.x = 1 / (window.innerWidth * pixelRatio)
         uniforms['resolution'].value.y = 1 / (window.innerHeight * pixelRatio)
@@ -24,7 +23,6 @@ function Effects() {
     useFrame(() => composer.current.render(), 1)
 
     const params = {
-        // exposure: 1.098,
         exposure: 1.098,
         bloomThreshold: 0,
         bloomStrength: 0.5,
