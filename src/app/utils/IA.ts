@@ -6,21 +6,27 @@ export function computeMove(
     gameState: Array3D,
     player: number,
     players: Array<number>,
-    depth: number
+    depth: number,
+    turns_before_check: number
 ): Coords {
     const minimax = (
         current_state: Array3D,
         current_depth: number,
         current_player: number,
         alpha: number,
-        beta: number
+        beta: number,
+        turns_before_check: number
     ): [number, Coords] => {
         const { min, max } = Math
 
-        const [game_over, score] = evalState(current_state, player)
-        if (game_over || current_depth <= 0) {
-            const depthFactor = (current_depth + depth) / (depth + depth)
-            return [score * depthFactor, null]
+        // dont check for winners until someone can actualy win
+        if (turns_before_check <= 0 || current_depth <= 0) {
+            const [game_over, score] = evalState(current_state, player)
+            if (game_over || current_depth <= 0) {
+                // further wins have lower priority than closer ones
+                const depthFactor = (current_depth + depth) / (depth + depth)
+                return [score * depthFactor, null]
+            }
         }
 
         let bestScore: number, bestMove: Coords
@@ -38,7 +44,8 @@ export function computeMove(
                     current_depth - 1,
                     nextPlayer(current_player, players),
                     alpha,
-                    beta
+                    beta,
+                    turns_before_check - 1
                 )
 
                 // update max
@@ -64,7 +71,8 @@ export function computeMove(
                     current_depth - 1,
                     nextPlayer(current_player, players),
                     alpha,
-                    beta
+                    beta,
+                    turns_before_check - 1
                 )
 
                 // update min
@@ -82,7 +90,7 @@ export function computeMove(
         return [bestScore, bestMove]
     }
 
-    const [_, move] = minimax(gameState, depth, player, -Infinity, +Infinity)
+    const [_, move] = minimax(gameState, depth, player, -Infinity, +Infinity, turns_before_check)
     return move
 }
 

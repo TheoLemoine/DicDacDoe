@@ -13,7 +13,7 @@ import { set } from '../../utils/array3D'
 import IAWorker from '../../workers/IAWorker.worker'
 
 const MakeIAPlay = () => {
-    const [{ current_player, players, winner }, dispatchToGame] = useGame()
+    const [{ current_player, players, winner, turn }, dispatchToGame] = useGame()
     const [{ grid }, dispatchToGrid] = useGrid()
 
     const worker = useRef(null)
@@ -31,6 +31,7 @@ const MakeIAPlay = () => {
             gameState: grid,
             player: current_player,
             players,
+            turn,
         })
     }, [grid, current_player, players])
 
